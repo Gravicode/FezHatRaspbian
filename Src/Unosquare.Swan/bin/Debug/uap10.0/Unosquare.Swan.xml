@@ -1,0 +1,3275 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Unosquare.Swan</name>
+    </assembly>
+    <members>
+        <member name="T:Unosquare.Swan.Abstractions.AppWorkerBase">
+            <summary>
+            A base implementation of an Application service containing a worker task that performs background processing.
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Abstractions.AppWorkerBase.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.Abstractions.AppWorkerBase"/> class.
+            </summary>
+        </member>
+        <member name="E:Unosquare.Swan.Abstractions.AppWorkerBase.StateChanged">
+            <summary>
+            Occurs when [state changed].
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Abstractions.AppWorkerBase.State">
+            <summary>
+            Gets the state of the application service.
+            In other words, useful to know whether the service is running.
+            </summary>
+            <value>
+            The state.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Abstractions.AppWorkerBase.CancellationToken">
+            <summary>
+            Gets the cancellation token.
+            </summary>
+            <value>
+            The cancellation token.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Abstractions.AppWorkerBase.IsBusy">
+            <summary>
+            Gets a value indicating whether the thread is busy
+            </summary>
+            <value>
+              <c>true</c> if this instance is busy; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="M:Unosquare.Swan.Abstractions.AppWorkerBase.Initialize">
+            <summary>
+            Performs internal service initialization tasks required before starting the service.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">Service cannot be initialized because it seems to be currently running</exception>
+        </member>
+        <member name="M:Unosquare.Swan.Abstractions.AppWorkerBase.Start">
+            <inheritdoc/>
+            <exception cref="T:System.InvalidOperationException">Service cannot be started because it seems to be currently running</exception>
+        </member>
+        <member name="M:Unosquare.Swan.Abstractions.AppWorkerBase.Stop">
+            <inheritdoc/>
+            <exception cref="T:System.InvalidOperationException">Service cannot be stopped because it is not running.</exception>
+        </member>
+        <member name="M:Unosquare.Swan.Abstractions.AppWorkerBase.OnWorkerThreadLoopException(System.Exception)">
+            <summary>
+            Called when an unhandled exception is thrown.
+            </summary>
+            <param name="ex">The ex.</param>
+        </member>
+        <member name="M:Unosquare.Swan.Abstractions.AppWorkerBase.OnWorkerThreadExit">
+            <summary>
+            This method is called when the user loop has exited
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Abstractions.AppWorkerBase.WorkerThreadLoop">
+            <summary>
+            Implement this method as a loop that checks whether CancellationPending has been set to true
+            If so, immediately exit the loop.
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Abstractions.AppWorkerBase.CreateWorker">
+            <summary>
+            Creates the worker task.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">Worker Thread seems to be still running.</exception>
+        </member>
+        <member name="T:Unosquare.Swan.Abstractions.AppWorkerStateChangedEventArgs">
+            <summary>
+            Represents event arguments whenever the state of an application service changes
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Abstractions.AppWorkerStateChangedEventArgs.#ctor(Unosquare.Swan.AppWorkerState,Unosquare.Swan.AppWorkerState)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.Abstractions.AppWorkerStateChangedEventArgs" /> class.
+            </summary>
+            <param name="oldState">The old state.</param>
+            <param name="newState">The new state.</param>
+        </member>
+        <member name="P:Unosquare.Swan.Abstractions.AppWorkerStateChangedEventArgs.NewState">
+            <summary>
+            Gets the state to which the application service changed.
+            </summary>
+            <value>
+            The new state.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Abstractions.AppWorkerStateChangedEventArgs.OldState">
+            <summary>
+            Gets the old state.
+            </summary>
+            <value>
+            The old state.
+            </value>
+        </member>
+        <member name="T:Unosquare.Swan.Components.CircularBuffer">
+            <summary>
+            A fixed-size buffer that acts as an infinite length one.
+            This buffer is backed by unmanaged, very fast memory so ensure you call
+            the dispose method when you are done using it.
+            Only for Windows.
+            </summary>
+            <seealso cref="T:System.IDisposable" />
+        </member>
+        <member name="F:Unosquare.Swan.Components.CircularBuffer._syncLock">
+            <summary>
+            The locking object to perform synchronization.
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Components.CircularBuffer._buffer">
+            <summary>
+            The unmanaged buffer
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Components.CircularBuffer.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.Components.CircularBuffer"/> class.
+            </summary>
+            <param name="bufferLength">Length of the buffer.</param>
+        </member>
+        <member name="P:Unosquare.Swan.Components.CircularBuffer.Length">
+            <summary>
+            Gets the capacity of this buffer.
+            </summary>
+            <value>
+            The length.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Components.CircularBuffer.ReadIndex">
+            <summary>
+            Gets the current, 0-based read index
+            </summary>
+            <value>
+            The index of the read.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Components.CircularBuffer.WriteIndex">
+            <summary>
+            Gets the current, 0-based write index.
+            </summary>
+            <value>
+            The index of the write.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Components.CircularBuffer.WriteTag">
+            <summary>
+            Gets an the object associated with the last write
+            </summary>
+            <value>
+            The write tag.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Components.CircularBuffer.ReadableCount">
+            <summary>
+            Gets the available bytes to read.
+            </summary>
+            <value>
+            The readable count.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Components.CircularBuffer.WritableCount">
+            <summary>
+            Gets the number of bytes that can be written.
+            </summary>
+            <value>
+            The writable count.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Components.CircularBuffer.CapacityPercent">
+            <summary>
+            Gets percentage of used bytes (readbale/available, from 0.0 to 1.0).
+            </summary>
+            <value>
+            The capacity percent.
+            </value>
+        </member>
+        <member name="M:Unosquare.Swan.Components.CircularBuffer.Read(System.Int32,System.Byte[],System.Int32)">
+            <summary>
+            Reads the specified number of bytes into the target array.
+            </summary>
+            <param name="requestedBytes">The requested bytes.</param>
+            <param name="target">The target.</param>
+            <param name="targetOffset">The target offset.</param>
+            <exception cref="T:System.InvalidOperationException">
+            Exception that is thrown when a method call is invalid for the object's current state
+            </exception>
+        </member>
+        <member name="M:Unosquare.Swan.Components.CircularBuffer.Write(System.IntPtr,System.Int32,System.TimeSpan)">
+            <summary>
+            Writes data to the backing buffer using the specified pointer and length.
+            and associating a write tag for this operation.
+            </summary>
+            <param name="source">The source.</param>
+            <param name="length">The length.</param>
+            <param name="writeTag">The write tag.</param>
+            <exception cref="T:System.InvalidOperationException">Read</exception>
+        </member>
+        <member name="M:Unosquare.Swan.Components.CircularBuffer.Clear">
+            <summary>
+            Resets all states as if this buffer had just been created.
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Components.CircularBuffer.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Components.CircularBuffer.CopyMemory(System.IntPtr,System.IntPtr,System.UInt32)">
+            <summary>
+            Fast pointer memory block copy function
+            </summary>
+            <param name="destination">The destination.</param>
+            <param name="source">The source.</param>
+            <param name="length">The length.</param>
+        </member>
+        <member name="T:Unosquare.Swan.Components.CsProjFile`1">
+            <summary>
+            Represents a CsProjFile parser
+            Based on https://github.com/maartenba/dotnetcli-init
+            </summary>
+            <typeparam name="T">The type of <c>CsProjMetadataBase</c></typeparam>
+            <seealso cref="T:System.IDisposable" />
+        </member>
+        <member name="M:Unosquare.Swan.Components.CsProjFile`1.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.Components.CsProjFile`1"/> class.
+            </summary>
+            <param name="filename">The filename.</param>
+        </member>
+        <member name="M:Unosquare.Swan.Components.CsProjFile`1.#ctor(System.IO.Stream,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.Components.CsProjFile`1"/> class.
+            </summary>
+            <param name="stream">The stream.</param>
+            <param name="leaveOpen">if set to <c>true</c> [leave open].</param>
+            <exception cref="T:System.ArgumentException">Project file is not of the new .csproj type.</exception>
+        </member>
+        <member name="P:Unosquare.Swan.Components.CsProjFile`1.Metadata">
+            <summary>
+            Gets the metadata.
+            </summary>
+            <value>
+            The nu get metadata.
+            </value>
+        </member>
+        <member name="M:Unosquare.Swan.Components.CsProjFile`1.Save">
+            <summary>
+            Saves this instance.
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Components.CsProjFile`1.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="T:Unosquare.Swan.Components.CsProjMetadataBase">
+            <summary>
+            Represents a CsProj metadata abstract class
+            to use with <c>CsProjFile</c> parser.
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Components.CsProjMetadataBase.PackageId">
+            <summary>
+            Gets the package identifier.
+            </summary>
+            <value>
+            The package identifier.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Components.CsProjMetadataBase.AssemblyName">
+            <summary>
+            Gets the name of the assembly.
+            </summary>
+            <value>
+            The name of the assembly.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Components.CsProjMetadataBase.TargetFrameworks">
+            <summary>
+            Gets the target frameworks.
+            </summary>
+            <value>
+            The target frameworks.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Components.CsProjMetadataBase.TargetFramework">
+            <summary>
+            Gets the target framework.
+            </summary>
+            <value>
+            The target framework.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Components.CsProjMetadataBase.Version">
+            <summary>
+            Gets the version.
+            </summary>
+            <value>
+            The version.
+            </value>
+        </member>
+        <member name="M:Unosquare.Swan.Components.CsProjMetadataBase.ParseCsProjTags(System.String[]@)">
+            <summary>
+            Parses the cs proj tags.
+            </summary>
+            <param name="args">The arguments.</param>
+        </member>
+        <member name="M:Unosquare.Swan.Components.CsProjMetadataBase.SetData(System.Xml.Linq.XDocument)">
+            <summary>
+            Sets the data.
+            </summary>
+            <param name="xmlDocument">The XML document.</param>
+        </member>
+        <member name="M:Unosquare.Swan.Components.CsProjMetadataBase.FindElement(System.String)">
+            <summary>
+            Finds the element.
+            </summary>
+            <param name="elementName">Name of the element.</param>
+            <returns>A XElement.</returns>
+        </member>
+        <member name="T:Unosquare.Swan.Components.DependencyContainer">
+            <summary>
+            The concrete implementation of a simple IoC container
+            based largely on TinyIoC
+            </summary>
+            <seealso cref="T:System.IDisposable" />
+            <summary>
+            The concrete implementation of a simple IoC container
+            based largely on TinyIoC
+            </summary>
+            <seealso cref="T:System.IDisposable" />
+            <summary>
+            The concrete implementation of a simple IoC container
+            based largely on TinyIoC
+            </summary>
+            <seealso cref="T:System.IDisposable" />
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.Components.DependencyContainer"/> class.
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Components.DependencyContainer.Current">
+            <summary>
+            Lazy created Singleton instance of the container for simple scenarios
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.GetChildContainer">
+            <summary>
+            Gets the child container.
+            </summary>
+            <returns>A new instance of the <see cref="T:Unosquare.Swan.Components.DependencyContainer"/> class</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.AutoRegister(System.Collections.Generic.IEnumerable{System.Reflection.Assembly},Unosquare.Swan.Components.DependencyContainerDuplicateImplementationActions,System.Func{System.Type,System.Boolean})">
+            <summary>
+            Attempt to automatically register all non-generic classes and interfaces in the specified assemblies
+            Types will only be registered if they pass the supplied registration predicate.
+            </summary>
+            <param name="assemblies">Assemblies to process</param>
+            <param name="duplicateAction">What action to take when encountering duplicate implementations of an interface/base class.</param>
+            <param name="registrationPredicate">Predicate to determine if a particular type should be registered</param>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.Register(System.Type,System.String)">
+            <summary>
+            Creates/replaces a named container class registration with default options.
+            </summary>
+            <param name="registerType">Type to register</param>
+            <param name="name">Name of registration</param>
+            <returns>RegisterOptions for fluent API</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.Register(System.Type,System.Type,System.String)">
+            <summary>
+            Creates/replaces a named container class registration with a given implementation and default options.
+            </summary>
+            <param name="registerType">Type to register</param>
+            <param name="registerImplementation">Type to instantiate that implements RegisterType</param>
+            <param name="name">Name of registration</param>
+            <returns>RegisterOptions for fluent API</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.Register(System.Type,System.Object,System.String)">
+            <summary>
+            Creates/replaces a named container class registration with a specific, strong referenced, instance.
+            </summary>
+            <param name="registerType">Type to register</param>
+            <param name="instance">Instance of RegisterType to register</param>
+            <param name="name">Name of registration</param>
+            <returns>RegisterOptions for fluent API</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.Register(System.Type,System.Type,System.Object,System.String)">
+            <summary>
+            Creates/replaces a named container class registration with a specific, strong referenced, instance.
+            </summary>
+            <param name="registerType">Type to register</param>
+            <param name="registerImplementation">Type of instance to register that implements RegisterType</param>
+            <param name="instance">Instance of RegisterImplementation to register</param>
+            <param name="name">Name of registration</param>
+            <returns>RegisterOptions for fluent API</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.Register(System.Type,System.Func{Unosquare.Swan.Components.DependencyContainer,System.Collections.Generic.Dictionary{System.String,System.Object},System.Object},System.String)">
+            <summary>
+            Creates/replaces a container class registration with a user specified factory
+            </summary>
+            <param name="registerType">Type to register</param>
+            <param name="factory">Factory/lambda that returns an instance of RegisterType</param>
+            <param name="name">Name of registation</param>
+            <returns>RegisterOptions for fluent API</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.Register``1(System.String)">
+            <summary>
+            Creates/replaces a named container class registration with default options.
+            </summary>
+            <typeparam name="TRegister">Type to register</typeparam>
+            <param name="name">Name of registration</param>
+            <returns>RegisterOptions for fluent API</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.Register``2(System.String)">
+            <summary>
+            Creates/replaces a named container class registration with a given implementation and default options.
+            </summary>
+            <typeparam name="TRegister">Type to register</typeparam>
+            <typeparam name="TRegisterImplementation">Type to instantiate that implements RegisterType</typeparam>
+            <param name="name">Name of registration</param>
+            <returns>RegisterOptions for fluent API</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.Register``1(``0,System.String)">
+            <summary>
+            Creates/replaces a named container class registration with a specific, strong referenced, instance.
+            </summary>
+            <typeparam name="TRegister">Type to register</typeparam>
+            <param name="instance">Instance of RegisterType to register</param>
+            <param name="name">Name of registration</param>
+            <returns>RegisterOptions for fluent API</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.Register``2(``1,System.String)">
+            <summary>
+            Creates/replaces a named container class registration with a specific, strong referenced, instance.
+            </summary>
+            <typeparam name="TRegister">Type to register</typeparam>
+            <typeparam name="TRegisterImplementation">Type of instance to register that implements RegisterType</typeparam>
+            <param name="instance">Instance of RegisterImplementation to register</param>
+            <param name="name">Name of registration</param>
+            <returns>RegisterOptions for fluent API</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.Register``1(System.Func{Unosquare.Swan.Components.DependencyContainer,System.Collections.Generic.Dictionary{System.String,System.Object},``0},System.String)">
+            <summary>
+            Creates/replaces a named container class registration with a user specified factory
+            </summary>
+            <typeparam name="TRegister">Type to register</typeparam>
+            <param name="factory">Factory/lambda that returns an instance of RegisterType</param>
+            <param name="name">Name of registation</param>
+            <returns>RegisterOptions for fluent API</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.RegisterMultiple``1(System.Collections.Generic.IEnumerable{System.Type})">
+            <summary>
+            Register multiple implementations of a type.
+            
+            Internally this registers each implementation using the full name of the class as its registration name.
+            </summary>
+            <typeparam name="TRegister">Type that each implementation implements</typeparam>
+            <param name="implementationTypes">Types that implement RegisterType</param>
+            <returns>MultiRegisterOptions for the fluent API</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.RegisterMultiple(System.Type,System.Collections.Generic.IEnumerable{System.Type})">
+            <summary>
+            Register multiple implementations of a type.
+            
+            Internally this registers each implementation using the full name of the class as its registration name.
+            </summary>
+            <param name="registrationType">Type that each implementation implements</param>
+            <param name="implementationTypes">Types that implement RegisterType</param>
+            <returns>MultiRegisterOptions for the fluent API</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.Unregister``1(System.String)">
+            <summary>
+            Remove a named container class registration.
+            </summary>
+            <typeparam name="TRegister">Type to unregister</typeparam>
+            <param name="name">Name of registration</param>
+            <returns><c>true</c> if the registration is successfully found and removed; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.Unregister(System.Type,System.String)">
+            <summary>
+            Remove a named container class registration.
+            </summary>
+            <param name="registerType">Type to unregister</param>
+            <param name="name">Name of registration</param>
+            <returns><c>true</c> if the registration is successfully found and removed; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.Resolve(System.Type,System.Collections.Generic.Dictionary{System.String,System.Object},Unosquare.Swan.Components.DependencyContainerResolveOptions)">
+             <summary>
+             Attempts to resolve a type using specified options and the supplied constructor parameters.
+            
+             Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
+             All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
+             </summary>
+             <param name="resolveType">Type to resolve</param>
+             <param name="parameters">User specified constructor parameters</param>
+             <param name="options">Resolution options</param>
+             <returns>Instance of type</returns>
+             <exception cref="T:Unosquare.Swan.Exceptions.DependencyContainerResolutionException">Unable to resolve the type.</exception>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.Resolve(System.Type,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},Unosquare.Swan.Components.DependencyContainerResolveOptions)">
+             <summary>
+             Attempts to resolve a named type using specified options and the supplied constructor parameters.
+            
+             Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
+             All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
+             </summary>
+             <param name="resolveType">Type to resolve</param>
+             <param name="name">Name of registration</param>
+             <param name="parameters">User specified constructor parameters</param>
+             <param name="options">Resolution options</param>
+             <returns>Instance of type</returns>
+             <exception cref="T:Unosquare.Swan.Exceptions.DependencyContainerResolutionException">Unable to resolve the type.</exception>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.Resolve``1(Unosquare.Swan.Components.DependencyContainerResolveOptions)">
+            <summary>
+            Attempts to resolve a type using specified options.
+            </summary>
+            <typeparam name="TResolveType">Type to resolve</typeparam>
+            <param name="options">Resolution options</param>
+            <returns>Instance of type</returns>
+            <exception cref="T:Unosquare.Swan.Exceptions.DependencyContainerResolutionException">Unable to resolve the type.</exception>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.Resolve``1(System.String,Unosquare.Swan.Components.DependencyContainerResolveOptions)">
+             <summary>
+             Attempts to resolve a type using supplied options and  name.
+            
+             Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
+             All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
+             </summary>
+             <typeparam name="TResolveType">Type to resolve</typeparam>
+             <param name="name">Name of registration</param>
+             <param name="options">Resolution options</param>
+             <returns>Instance of type</returns>
+             <exception cref="T:Unosquare.Swan.Exceptions.DependencyContainerResolutionException">Unable to resolve the type.</exception>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.Resolve``1(System.Collections.Generic.Dictionary{System.String,System.Object},Unosquare.Swan.Components.DependencyContainerResolveOptions)">
+             <summary>
+             Attempts to resolve a type using specified options and the supplied constructor parameters.
+            
+             Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
+             All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
+             </summary>
+             <typeparam name="TResolveType">Type to resolve</typeparam>
+             <param name="parameters">User specified constructor parameters</param>
+             <param name="options">Resolution options</param>
+             <returns>Instance of type</returns>
+             <exception cref="T:Unosquare.Swan.Exceptions.DependencyContainerResolutionException">Unable to resolve the type.</exception>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.Resolve``1(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},Unosquare.Swan.Components.DependencyContainerResolveOptions)">
+             <summary>
+             Attempts to resolve a named type using specified options and the supplied constructor parameters.
+            
+             Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
+             All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
+             </summary>
+             <typeparam name="TResolveType">Type to resolve</typeparam>
+             <param name="name">Name of registration</param>
+             <param name="parameters">User specified constructor parameters</param>
+             <param name="options">Resolution options</param>
+             <returns>Instance of type</returns>
+             <exception cref="T:Unosquare.Swan.Exceptions.DependencyContainerResolutionException">Unable to resolve the type.</exception>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.CanResolve(System.Type,System.Collections.Generic.Dictionary{System.String,System.Object},System.String,Unosquare.Swan.Components.DependencyContainerResolveOptions)">
+            <summary>
+            Attempts to predict whether a given type can be resolved with the supplied constructor parameters options.
+            Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
+            All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
+            Note: Resolution may still fail if user defined factory registrations fail to construct objects when called.
+            </summary>
+            <param name="resolveType">Type to resolve</param>
+            <param name="parameters">User supplied named parameter overloads</param>
+            <param name="name">The name.</param>
+            <param name="options">Resolution options</param>
+            <returns>
+            Bool indicating whether the type can be resolved
+            </returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.CanResolve``1(Unosquare.Swan.Components.DependencyContainerResolveOptions)">
+             <summary>
+             Attempts to predict whether a given type can be resolved with the specified options.
+            
+             Note: Resolution may still fail if user defined factory registrations fail to construct objects when called.
+             </summary>
+             <typeparam name="TResolveType">Type to resolve</typeparam>
+             <param name="options">Resolution options</param>
+             <returns>Bool indicating whether the type can be resolved</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.CanResolve``1(System.Collections.Generic.Dictionary{System.String,System.Object},Unosquare.Swan.Components.DependencyContainerResolveOptions)">
+             <summary>
+             Attempts to predict whether a given type can be resolved with the supplied constructor parameters options.
+            
+             Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
+             All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
+             
+             Note: Resolution may still fail if user defined factory registrations fail to construct objects when called.
+             </summary>
+             <typeparam name="TResolveType">Type to resolve</typeparam>
+             <param name="parameters">User supplied named parameter overloads</param>
+             <param name="options">Resolution options</param>
+             <returns>Bool indicating whether the type can be resolved</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.CanResolve``1(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},Unosquare.Swan.Components.DependencyContainerResolveOptions)">
+             <summary>
+             Attempts to predict whether a given named type can be resolved with the supplied constructor parameters options.
+            
+             Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
+             All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
+             
+             Note: Resolution may still fail if user defined factory registrations fail to construct objects when called.
+             </summary>
+             <typeparam name="TResolveType">Type to resolve</typeparam>
+             <param name="name">Name of registration</param>
+             <param name="parameters">User supplied named parameter overloads</param>
+             <param name="options">Resolution options</param>
+             <returns>Bool indicating whether the type can be resolved</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.TryResolve(System.Type,System.Object@)">
+            <summary>
+            Attempts to resolve a type using the default options
+            </summary>
+            <param name="resolveType">Type to resolve</param>
+            <param name="resolvedType">Resolved type or default if resolve fails</param>
+            <returns><c>true</c> if resolved successfully, false otherwise</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.TryResolve(System.Type,Unosquare.Swan.Components.DependencyContainerResolveOptions,System.Object@)">
+            <summary>
+            Attempts to resolve a type using the given options
+            </summary>
+            <param name="resolveType">Type to resolve</param>
+            <param name="options">Resolution options</param>
+            <param name="resolvedType">Resolved type or default if resolve fails</param>
+            <returns><c>true</c> if resolved successfully, false otherwise</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.TryResolve(System.Type,System.String,System.Object@)">
+            <summary>
+            Attempts to resolve a type using the default options and given name
+            </summary>
+            <param name="resolveType">Type to resolve</param>
+            <param name="name">Name of registration</param>
+            <param name="resolvedType">Resolved type or default if resolve fails</param>
+            <returns><c>true</c> if resolved successfully, false otherwise</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.TryResolve(System.Type,System.String,Unosquare.Swan.Components.DependencyContainerResolveOptions,System.Object@)">
+            <summary>
+            Attempts to resolve a type using the given options and name
+            </summary>
+            <param name="resolveType">Type to resolve</param>
+            <param name="name">Name of registration</param>
+            <param name="options">Resolution options</param>
+            <param name="resolvedType">Resolved type or default if resolve fails</param>
+            <returns><c>true</c> if resolved successfully, false otherwise</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.TryResolve(System.Type,System.Collections.Generic.Dictionary{System.String,System.Object},System.Object@)">
+            <summary>
+            Attempts to resolve a type using the default options and supplied constructor parameters
+            </summary>
+            <param name="resolveType">Type to resolve</param>
+            <param name="parameters">User specified constructor parameters</param>
+            <param name="resolvedType">Resolved type or default if resolve fails</param>
+            <returns><c>true</c> if resolved successfully, false otherwise</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.TryResolve(System.Type,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Object@)">
+            <summary>
+            Attempts to resolve a type using the default options and supplied name and constructor parameters
+            </summary>
+            <param name="resolveType">Type to resolve</param>
+            <param name="name">Name of registration</param>
+            <param name="parameters">User specified constructor parameters</param>
+            <param name="resolvedType">Resolved type or default if resolve fails</param>
+            <returns><c>true</c> if resolved successfully, false otherwise</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.TryResolve(System.Type,System.Collections.Generic.Dictionary{System.String,System.Object},Unosquare.Swan.Components.DependencyContainerResolveOptions,System.Object@)">
+            <summary>
+            Attempts to resolve a type using the supplied options and constructor parameters
+            </summary>
+            <param name="resolveType">Type to resolve</param>
+            <param name="parameters">User specified constructor parameters</param>
+            <param name="options">Resolution options</param>
+            <param name="resolvedType">Resolved type or default if resolve fails</param>
+            <returns><c>true</c> if resolved successfully, false otherwise</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.TryResolve(System.Type,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},Unosquare.Swan.Components.DependencyContainerResolveOptions,System.Object@)">
+            <summary>
+            Attempts to resolve a type using the supplied name, options and constructor parameters
+            </summary>
+            <param name="resolveType">Type to resolve</param>
+            <param name="name">Name of registration</param>
+            <param name="parameters">User specified constructor parameters</param>
+            <param name="options">Resolution options</param>
+            <param name="resolvedType">Resolved type or default if resolve fails</param>
+            <returns><c>true</c> if resolved successfully, false otherwise</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.TryResolve``1(``0@)">
+            <summary>
+            Attempts to resolve a type using the default options
+            </summary>
+            <typeparam name="TResolveType">Type to resolve</typeparam>
+            <param name="resolvedType">Resolved type or default if resolve fails</param>
+            <returns><c>true</c> if resolved successfully, false otherwise</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.TryResolve``1(Unosquare.Swan.Components.DependencyContainerResolveOptions,``0@)">
+            <summary>
+            Attempts to resolve a type using the given options
+            </summary>
+            <typeparam name="TResolveType">Type to resolve</typeparam>
+            <param name="options">Resolution options</param>
+            <param name="resolvedType">Resolved type or default if resolve fails</param>
+            <returns><c>true</c> if resolved successfully, false otherwise</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.TryResolve``1(System.String,``0@)">
+            <summary>
+            Attempts to resolve a type using the default options and given name
+            </summary>
+            <typeparam name="TResolveType">Type to resolve</typeparam>
+            <param name="name">Name of registration</param>
+            <param name="resolvedType">Resolved type or default if resolve fails</param>
+            <returns><c>true</c> if resolved successfully, false otherwise</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.TryResolve``1(System.String,Unosquare.Swan.Components.DependencyContainerResolveOptions,``0@)">
+            <summary>
+            Attempts to resolve a type using the given options and name
+            </summary>
+            <typeparam name="TResolveType">Type to resolve</typeparam>
+            <param name="name">Name of registration</param>
+            <param name="options">Resolution options</param>
+            <param name="resolvedType">Resolved type or default if resolve fails</param>
+            <returns><c>true</c> if resolved successfully, false otherwise</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.TryResolve``1(System.Collections.Generic.Dictionary{System.String,System.Object},``0@)">
+            <summary>
+            Attempts to resolve a type using the default options and supplied constructor parameters
+            </summary>
+            <typeparam name="TResolveType">Type to resolve</typeparam>
+            <param name="parameters">User specified constructor parameters</param>
+            <param name="resolvedType">Resolved type or default if resolve fails</param>
+            <returns><c>true</c> if resolved successfully, false otherwise</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.TryResolve``1(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},``0@)">
+            <summary>
+            Attempts to resolve a type using the default options and supplied name and constructor parameters
+            </summary>
+            <typeparam name="TResolveType">Type to resolve</typeparam>
+            <param name="name">Name of registration</param>
+            <param name="parameters">User specified constructor parameters</param>
+            <param name="resolvedType">Resolved type or default if resolve fails</param>
+            <returns><c>true</c> if resolved successfully, false otherwise</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.TryResolve``1(System.Collections.Generic.Dictionary{System.String,System.Object},Unosquare.Swan.Components.DependencyContainerResolveOptions,``0@)">
+            <summary>
+            Attempts to resolve a type using the supplied options and constructor parameters
+            </summary>
+            <typeparam name="TResolveType">Type to resolve</typeparam>
+            <param name="parameters">User specified constructor parameters</param>
+            <param name="options">Resolution options</param>
+            <param name="resolvedType">Resolved type or default if resolve fails</param>
+            <returns><c>true</c> if resolved successfully, false otherwise</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.TryResolve``1(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},Unosquare.Swan.Components.DependencyContainerResolveOptions,``0@)">
+            <summary>
+            Attempts to resolve a type using the supplied name, options and constructor parameters
+            </summary>
+            <typeparam name="TResolveType">Type to resolve</typeparam>
+            <param name="name">Name of registration</param>
+            <param name="parameters">User specified constructor parameters</param>
+            <param name="options">Resolution options</param>
+            <param name="resolvedType">Resolved type or default if resolve fails</param>
+            <returns><c>true</c> if resolved successfully, false otherwise</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.ResolveAll(System.Type,System.Boolean)">
+            <summary>
+            Returns all registrations of a type
+            </summary>
+            <param name="resolveType">Type to resolveAll</param>
+            <param name="includeUnnamed">Whether to include un-named (default) registrations</param>
+            <returns>IEnumerable</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.ResolveAll``1(System.Boolean)">
+            <summary>
+            Returns all registrations of a type
+            </summary>
+            <typeparam name="TResolveType">Type to resolveAll</typeparam>
+            <param name="includeUnnamed">Whether to include un-named (default) registrations</param>
+            <returns>IEnumerable</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.BuildUp(System.Object,Unosquare.Swan.Components.DependencyContainerResolveOptions)">
+            <summary>
+            Attempts to resolve all public property dependencies on the given object using the given resolve options.
+            </summary>
+            <param name="input">Object to "build up"</param>
+            <param name="resolveOptions">Resolve options to use</param>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="T:Unosquare.Swan.Components.DependencyContainer.TypeRegistration">
+            <summary>
+            Represents a Type Registration within the IoC Container
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.TypeRegistration.#ctor(System.Type,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.Components.DependencyContainer.TypeRegistration"/> class.
+            </summary>
+            <param name="type">The type.</param>
+            <param name="name">The name.</param>
+        </member>
+        <member name="P:Unosquare.Swan.Components.DependencyContainer.TypeRegistration.Type">
+            <summary>
+            Gets the type.
+            </summary>
+            <value>
+            The type.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Components.DependencyContainer.TypeRegistration.Name">
+            <summary>
+            Gets the name.
+            </summary>
+            <value>
+            The name.
+            </value>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.TypeRegistration.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object" />, is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object" /> to compare with this instance.</param>
+            <returns>
+              <c>true</c> if the specified <see cref="T:System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.TypeRegistration.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            </returns>
+        </member>
+        <member name="P:Unosquare.Swan.Components.DependencyContainer.ObjectFactoryBase.AssumeConstruction">
+            <summary>
+            Whether to assume this factory successfully constructs its objects
+            
+            Generally set to true for delegate style factories as CanResolve cannot delve
+            into the delegates they contain.
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Components.DependencyContainer.ObjectFactoryBase.CreatesType">
+            <summary>
+            The type the factory instantiates
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Components.DependencyContainer.ObjectFactoryBase.Constructor">
+            <summary>
+            Constructor to use, if specified
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.ObjectFactoryBase.GetObject(System.Type,Unosquare.Swan.Components.DependencyContainer,System.Collections.Generic.Dictionary{System.String,System.Object},Unosquare.Swan.Components.DependencyContainerResolveOptions)">
+            <summary>
+            Create the type
+            </summary>
+            <param name="requestedType">Type user requested to be resolved</param>
+            <param name="container">Container that requested the creation</param>
+            <param name="parameters">Any user parameters passed</param>
+            <param name="options">The options.</param>
+            <returns> Instance of type </returns>
+        </member>
+        <member name="T:Unosquare.Swan.Components.DependencyContainer.MultiInstanceFactory">
+            <summary>
+            IObjectFactory that creates new instances of types for each resolution
+            </summary>
+        </member>
+        <member name="T:Unosquare.Swan.Components.DependencyContainer.DelegateFactory">
+            <summary>
+            IObjectFactory that invokes a specified delegate to construct the object
+            </summary>
+        </member>
+        <member name="T:Unosquare.Swan.Components.DependencyContainer.WeakDelegateFactory">
+            <summary>
+            IObjectFactory that invokes a specified delegate to construct the object
+            Holds the delegate using a weak reference
+            </summary>
+        </member>
+        <member name="T:Unosquare.Swan.Components.DependencyContainer.InstanceFactory">
+            <summary>
+            Stores an particular instance to return for a type
+            </summary>
+        </member>
+        <member name="T:Unosquare.Swan.Components.DependencyContainer.WeakInstanceFactory">
+            <summary>
+            Stores an particular instance to return for a type
+            
+            Stores the instance with a weak reference
+            </summary>
+        </member>
+        <member name="T:Unosquare.Swan.Components.DependencyContainer.SingletonFactory">
+            <summary>
+            A factory that lazy instantiates a type and always returns the same instance
+            </summary>
+        </member>
+        <member name="T:Unosquare.Swan.Components.DependencyContainer.RegisterOptions">
+            <summary>
+            Registration options for "fluent" API
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.RegisterOptions.#ctor(Unosquare.Swan.Components.DependencyContainer,Unosquare.Swan.Components.DependencyContainer.TypeRegistration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.Components.DependencyContainer.RegisterOptions"/> class.
+            </summary>
+            <param name="container">The container.</param>
+            <param name="registration">The registration.</param>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.RegisterOptions.AsSingleton">
+            <summary>
+            Make registration a singleton (single instance) if possible
+            </summary>
+            <returns>A registration options  for fluent API</returns>
+            <exception cref="T:Unosquare.Swan.Exceptions.DependencyContainerRegistrationException">Generic constraint registration exception</exception>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.RegisterOptions.AsMultiInstance">
+            <summary>
+            Make registration multi-instance if possible
+            </summary>
+            <returns>A registration options  for fluent API</returns>
+            <exception cref="T:Unosquare.Swan.Exceptions.DependencyContainerRegistrationException">Generic constraint registration exception</exception>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.RegisterOptions.WithWeakReference">
+            <summary>
+            Make registration hold a weak reference if possible
+            </summary>
+            <returns>A registration options  for fluent API</returns>
+            <exception cref="T:Unosquare.Swan.Exceptions.DependencyContainerRegistrationException">Generic constraint registration exception</exception>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.RegisterOptions.WithStrongReference">
+            <summary>
+            Make registration hold a strong reference if possible
+            </summary>
+            <returns>A registration options  for fluent API</returns>
+            <exception cref="T:Unosquare.Swan.Exceptions.DependencyContainerRegistrationException">Generic constraint registration exception</exception>
+        </member>
+        <member name="T:Unosquare.Swan.Components.DependencyContainer.MultiRegisterOptions">
+            <summary>
+            Registration options for "fluent" API when registering multiple implementations
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.MultiRegisterOptions.#ctor(System.Collections.Generic.IEnumerable{Unosquare.Swan.Components.DependencyContainer.RegisterOptions})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.Components.DependencyContainer.MultiRegisterOptions"/> class.
+            </summary>
+            <param name="registerOptions">The register options.</param>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.MultiRegisterOptions.AsSingleton">
+            <summary>
+            Make registration a singleton (single instance) if possible
+            </summary>
+            <returns>A registration multi-instance for fluent API</returns>
+            <exception cref="T:Unosquare.Swan.Exceptions.DependencyContainerRegistrationException">Generic Constraint Registration Exception</exception>
+        </member>
+        <member name="M:Unosquare.Swan.Components.DependencyContainer.MultiRegisterOptions.AsMultiInstance">
+            <summary>
+            Make registration multi-instance if possible
+            </summary>
+            <returns>A registration multi-instance for fluent API</returns>
+            <exception cref="T:Unosquare.Swan.Exceptions.DependencyContainerRegistrationException">Generic Constraint Registration Exception</exception>
+        </member>
+        <member name="T:Unosquare.Swan.Components.DependencyContainerResolveOptions">
+            <summary>
+            Resolution settings
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Components.DependencyContainerResolveOptions.Default">
+            <summary>
+            Gets the default options (attempt resolution of unregistered types, fail on named resolution if name not found)
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Components.DependencyContainerResolveOptions.UnregisteredResolutionAction">
+            <summary>
+            Gets or sets the unregistered resolution action.
+            </summary>
+            <value>
+            The unregistered resolution action.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Components.DependencyContainerResolveOptions.NamedResolutionFailureAction">
+            <summary>
+            Gets or sets the named resolution failure action.
+            </summary>
+            <value>
+            The named resolution failure action.
+            </value>
+        </member>
+        <member name="T:Unosquare.Swan.Components.DependencyContainerUnregisteredResolutionActions">
+            <summary>
+            Defines Resolution actions
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Components.DependencyContainerUnregisteredResolutionActions.AttemptResolve">
+            <summary>
+            Attempt to resolve type, even if the type isn't registered.
+            
+            Registered types/options will always take precedence.
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Components.DependencyContainerUnregisteredResolutionActions.Fail">
+            <summary>
+            Fail resolution if type not explicitly registered
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Components.DependencyContainerUnregisteredResolutionActions.GenericsOnly">
+            <summary>
+            Attempt to resolve unregistered type if requested type is generic
+            and no registration exists for the specific generic parameters used.
+            
+            Registered types/options will always take precedence.
+            </summary>
+        </member>
+        <member name="T:Unosquare.Swan.Components.DependencyContainerNamedResolutionFailureActions">
+            <summary>
+            Enumerates failure actions
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Components.DependencyContainerNamedResolutionFailureActions.AttemptUnnamedResolution">
+            <summary>
+            The attempt unnamed resolution
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Components.DependencyContainerNamedResolutionFailureActions.Fail">
+            <summary>
+            The fail
+            </summary>
+        </member>
+        <member name="T:Unosquare.Swan.Components.DependencyContainerDuplicateImplementationActions">
+            <summary>
+            Enumerates duplicate definition actions
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Components.DependencyContainerDuplicateImplementationActions.RegisterSingle">
+            <summary>
+            The register single
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Components.DependencyContainerDuplicateImplementationActions.RegisterMultiple">
+            <summary>
+            The register multiple
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Components.DependencyContainerDuplicateImplementationActions.Fail">
+            <summary>
+            The fail
+            </summary>
+        </member>
+        <member name="T:Unosquare.Swan.Components.IMessageHubMessage">
+            <summary>
+            A Message to be published/delivered by Messenger
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Components.IMessageHubMessage.Sender">
+            <summary>
+            The sender of the message, or null if not supported by the message implementation.
+            </summary>
+        </member>
+        <member name="T:Unosquare.Swan.Components.IMessageHubSubscription">
+            <summary>
+            Represents a message subscription
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Components.IMessageHubSubscription.SubscriptionToken">
+            <summary>
+            Token returned to the subscribed to reference this subscription
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Components.IMessageHubSubscription.ShouldAttemptDelivery(Unosquare.Swan.Components.IMessageHubMessage)">
+            <summary>
+            Whether delivery should be attempted.
+            </summary>
+            <param name="message">Message that may potentially be delivered.</param>
+            <returns><c>true</c> - ok to send, <c>false</c> - should not attempt to send</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.IMessageHubSubscription.Deliver(Unosquare.Swan.Components.IMessageHubMessage)">
+            <summary>
+            Deliver the message
+            </summary>
+            <param name="message">Message to deliver</param>
+        </member>
+        <member name="T:Unosquare.Swan.Components.IMessageHubProxy">
+            <summary>
+            Message proxy definition.
+            
+            A message proxy can be used to intercept/alter messages and/or
+            marshal delivery actions onto a particular thread.
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Components.IMessageHubProxy.Deliver(Unosquare.Swan.Components.IMessageHubMessage,Unosquare.Swan.Components.IMessageHubSubscription)">
+            <summary>
+            Delivers the specified message.
+            </summary>
+            <param name="message">The message.</param>
+            <param name="subscription">The subscription.</param>
+        </member>
+        <member name="T:Unosquare.Swan.Components.MessageHubDefaultProxy">
+            <summary>
+            Default "pass through" proxy.
+            
+            Does nothing other than deliver the message.
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Components.MessageHubDefaultProxy.Instance">
+            <summary>
+            Singleton instance of the proxy.
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Components.MessageHubDefaultProxy.Deliver(Unosquare.Swan.Components.IMessageHubMessage,Unosquare.Swan.Components.IMessageHubSubscription)">
+            <summary>
+            Delivers the specified message.
+            </summary>
+            <param name="message">The message.</param>
+            <param name="subscription">The subscription.</param>
+        </member>
+        <member name="T:Unosquare.Swan.Components.IMessageHub">
+            <summary>
+            Messenger hub responsible for taking subscriptions/publications and delivering of messages.
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Components.IMessageHub.Subscribe``1(System.Action{``0},System.Boolean,Unosquare.Swan.Components.IMessageHubProxy)">
+            <summary>
+            Subscribe to a message type with the given destination and delivery action.
+            Messages will be delivered via the specified proxy.
+            
+            All messages of this type will be delivered.
+            </summary>
+            <typeparam name="TMessage">Type of message</typeparam>
+            <param name="deliveryAction">Action to invoke when message is delivered</param>
+            <param name="useStrongReferences">Use strong references to destination and deliveryAction </param>
+            <param name="proxy">Proxy to use when delivering the messages</param>
+            <returns>MessageSubscription used to unsubscribing</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.IMessageHub.Subscribe``1(System.Action{``0},System.Func{``0,System.Boolean},System.Boolean,Unosquare.Swan.Components.IMessageHubProxy)">
+            <summary>
+            Subscribe to a message type with the given destination and delivery action with the given filter.
+            Messages will be delivered via the specified proxy.
+            All references are held with WeakReferences
+            Only messages that "pass" the filter will be delivered.
+            </summary>
+            <typeparam name="TMessage">Type of message</typeparam>
+            <param name="deliveryAction">Action to invoke when message is delivered</param>
+            <param name="messageFilter">The message filter.</param>
+            <param name="useStrongReferences">Use strong references to destination and deliveryAction</param>
+            <param name="proxy">Proxy to use when delivering the messages</param>
+            <returns>
+            MessageSubscription used to unsubscribing
+            </returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.IMessageHub.Unsubscribe``1(Unosquare.Swan.Components.MessageHubSubscriptionToken)">
+            <summary>
+            Unsubscribe from a particular message type.
+            
+            Does not throw an exception if the subscription is not found.
+            </summary>
+            <typeparam name="TMessage">Type of message</typeparam>
+            <param name="subscriptionToken">Subscription token received from Subscribe</param>
+        </member>
+        <member name="M:Unosquare.Swan.Components.IMessageHub.Publish``1(``0)">
+            <summary>
+            Publish a message to any subscribers
+            </summary>
+            <typeparam name="TMessage">Type of message</typeparam>
+            <param name="message">Message to deliver</param>
+        </member>
+        <member name="M:Unosquare.Swan.Components.IMessageHub.PublishAsync``1(``0)">
+            <summary>
+            Publish a message to any subscribers asynchronously
+            </summary>
+            <typeparam name="TMessage">Type of message</typeparam>
+            <param name="message">Message to deliver</param>
+            <returns>A task from Publish action</returns>
+        </member>
+        <member name="T:Unosquare.Swan.Components.MessageHub">
+            <inheritdoc />
+        </member>
+        <member name="M:Unosquare.Swan.Components.MessageHub.WeakMessageSubscription`1.#ctor(Unosquare.Swan.Components.MessageHubSubscriptionToken,System.Action{`0},System.Func{`0,System.Boolean})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.Components.MessageHub.WeakMessageSubscription`1" /> class.
+            </summary>
+            <param name="subscriptionToken">The subscription token.</param>
+            <param name="deliveryAction">The delivery action.</param>
+            <param name="messageFilter">The message filter.</param>
+            <exception cref="T:System.ArgumentNullException">subscriptionToken
+            or
+            deliveryAction
+            or
+            messageFilter</exception>
+        </member>
+        <member name="M:Unosquare.Swan.Components.MessageHub.StrongMessageSubscription`1.#ctor(Unosquare.Swan.Components.MessageHubSubscriptionToken,System.Action{`0},System.Func{`0,System.Boolean})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.Components.MessageHub.StrongMessageSubscription`1" /> class.
+            </summary>
+            <param name="subscriptionToken">The subscription token.</param>
+            <param name="deliveryAction">The delivery action.</param>
+            <param name="messageFilter">The message filter.</param>
+            <exception cref="T:System.ArgumentNullException">subscriptionToken
+            or
+            deliveryAction
+            or
+            messageFilter</exception>
+        </member>
+        <member name="M:Unosquare.Swan.Components.MessageHub.Subscribe``1(System.Action{``0},System.Boolean,Unosquare.Swan.Components.IMessageHubProxy)">
+            <summary>
+            Subscribe to a message type with the given destination and delivery action.
+            Messages will be delivered via the specified proxy.
+            
+            All messages of this type will be delivered.
+            </summary>
+            <typeparam name="TMessage">Type of message</typeparam>
+            <param name="deliveryAction">Action to invoke when message is delivered</param>
+            <param name="useStrongReferences">Use strong references to destination and deliveryAction </param>
+            <param name="proxy">Proxy to use when delivering the messages</param>
+            <returns>MessageSubscription used to unsubscribing</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.MessageHub.Subscribe``1(System.Action{``0},System.Func{``0,System.Boolean},System.Boolean,Unosquare.Swan.Components.IMessageHubProxy)">
+            <summary>
+            Subscribe to a message type with the given destination and delivery action with the given filter.
+            Messages will be delivered via the specified proxy.
+            All references are held with WeakReferences
+            Only messages that "pass" the filter will be delivered.
+            </summary>
+            <typeparam name="TMessage">Type of message</typeparam>
+            <param name="deliveryAction">Action to invoke when message is delivered</param>
+            <param name="messageFilter">The message filter.</param>
+            <param name="useStrongReferences">Use strong references to destination and deliveryAction</param>
+            <param name="proxy">Proxy to use when delivering the messages</param>
+            <returns>
+            MessageSubscription used to unsubscribing
+            </returns>
+        </member>
+        <member name="M:Unosquare.Swan.Components.MessageHub.Unsubscribe``1(Unosquare.Swan.Components.MessageHubSubscriptionToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Unosquare.Swan.Components.MessageHub.Publish``1(``0)">
+            <summary>
+            Publish a message to any subscribers
+            </summary>
+            <typeparam name="TMessage">Type of message</typeparam>
+            <param name="message">Message to deliver</param>
+        </member>
+        <member name="M:Unosquare.Swan.Components.MessageHub.PublishAsync``1(``0)">
+            <summary>
+            Publish a message to any subscribers asynchronously
+            </summary>
+            <typeparam name="TMessage">Type of message</typeparam>
+            <param name="message">Message to deliver</param>
+            <returns>A task with the publish</returns>
+        </member>
+        <member name="T:Unosquare.Swan.Components.MessageHubMessageBase">
+            <summary>
+            Base class for messages that provides weak reference storage of the sender
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Components.MessageHubMessageBase._sender">
+            <summary>
+            Store a WeakReference to the sender just in case anyone is daft enough to
+            keep the message around and prevent the sender from being collected.
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Components.MessageHubMessageBase.#ctor(System.Object)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.Components.MessageHubMessageBase"/> class.
+            </summary>
+            <param name="sender">The sender.</param>
+            <exception cref="T:System.ArgumentNullException">sender</exception>
+        </member>
+        <member name="P:Unosquare.Swan.Components.MessageHubMessageBase.Sender">
+            <summary>
+            The sender of the message, or null if not supported by the message implementation.
+            </summary>
+        </member>
+        <member name="T:Unosquare.Swan.Components.MessageHubGenericMessage`1">
+            <summary>
+            Generic message with user specified content
+            </summary>
+            <typeparam name="TContent">Content type to store</typeparam>
+        </member>
+        <member name="M:Unosquare.Swan.Components.MessageHubGenericMessage`1.#ctor(System.Object,`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.Components.MessageHubGenericMessage`1"/> class.
+            </summary>
+            <param name="sender">The sender.</param>
+            <param name="content">The content.</param>
+        </member>
+        <member name="P:Unosquare.Swan.Components.MessageHubGenericMessage`1.Content">
+            <summary>
+            Contents of the message
+            </summary>
+        </member>
+        <member name="T:Unosquare.Swan.Components.MessageHubSubscriptionToken">
+            <summary>
+            Represents an active subscription to a message
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Components.MessageHubSubscriptionToken.#ctor(Unosquare.Swan.Components.IMessageHub,System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.Components.MessageHubSubscriptionToken"/> class.
+            </summary>
+            <param name="hub">The hub.</param>
+            <param name="messageType">Type of the message.</param>
+            <exception cref="T:System.ArgumentNullException">hub</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">messageType</exception>
+        </member>
+        <member name="M:Unosquare.Swan.Components.MessageHubSubscriptionToken.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="T:Unosquare.Swan.ConnectionDataReceivedTrigger">
+            <summary>
+            Enumerates the possible causes of the DataReceived event occurring.
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.ConnectionDataReceivedTrigger.Flush">
+            <summary>
+            The trigger was a forceful flush of the buffer
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.ConnectionDataReceivedTrigger.NewLineSequenceEncountered">
+            <summary>
+            The new line sequence bytes were received
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.ConnectionDataReceivedTrigger.BufferFull">
+            <summary>
+            The buffer was full
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.ConnectionDataReceivedTrigger.BlockSizeReached">
+            <summary>
+            The block size reached
+            </summary>
+        </member>
+        <member name="T:Unosquare.Swan.ConnectionAcceptedEventArgs">
+            <summary>
+            The event arguments for when connections are accepted
+            </summary>
+            <seealso cref="T:System.EventArgs" />
+        </member>
+        <member name="M:Unosquare.Swan.ConnectionAcceptedEventArgs.#ctor(System.Net.Sockets.TcpClient)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.ConnectionAcceptedEventArgs" /> class.
+            </summary>
+            <param name="client">The client.</param>
+            <exception cref="T:System.ArgumentNullException">client</exception>
+        </member>
+        <member name="P:Unosquare.Swan.ConnectionAcceptedEventArgs.Client">
+            <summary>
+            Gets the client.
+            </summary>
+            <value>
+            The client.
+            </value>
+        </member>
+        <member name="T:Unosquare.Swan.ConnectionAcceptingEventArgs">
+            <summary>
+            Occurs before a connection is accepted. Set the Cancel property to true to prevent the connection from being accepted.
+            </summary>
+            <seealso cref="T:Unosquare.Swan.ConnectionAcceptedEventArgs" />
+        </member>
+        <member name="M:Unosquare.Swan.ConnectionAcceptingEventArgs.#ctor(System.Net.Sockets.TcpClient)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.ConnectionAcceptingEventArgs"/> class.
+            </summary>
+            <param name="client">The client.</param>
+        </member>
+        <member name="P:Unosquare.Swan.ConnectionAcceptingEventArgs.Cancel">
+            <summary>
+            Setting Cancel to true rejects the new TcpClient
+            </summary>
+            <value>
+              <c>true</c> if cancel; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="T:Unosquare.Swan.ConnectionListenerStartedEventArgs">
+            <summary>
+            Event arguments for when a server listener is started
+            </summary>
+            <seealso cref="T:System.EventArgs" />
+        </member>
+        <member name="M:Unosquare.Swan.ConnectionListenerStartedEventArgs.#ctor(System.Net.IPEndPoint)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.ConnectionListenerStartedEventArgs" /> class.
+            </summary>
+            <param name="listenerEndPoint">The listener end point.</param>
+            <exception cref="T:System.ArgumentNullException">listenerEndPoint</exception>
+        </member>
+        <member name="P:Unosquare.Swan.ConnectionListenerStartedEventArgs.EndPoint">
+            <summary>
+            Gets the end point.
+            </summary>
+            <value>
+            The end point.
+            </value>
+        </member>
+        <member name="T:Unosquare.Swan.ConnectionListenerFailedEventArgs">
+            <summary>
+            Event arguments for when a server listener fails to start
+            </summary>
+            <seealso cref="T:System.EventArgs" />
+        </member>
+        <member name="M:Unosquare.Swan.ConnectionListenerFailedEventArgs.#ctor(System.Net.IPEndPoint,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.ConnectionListenerFailedEventArgs" /> class.
+            </summary>
+            <param name="listenerEndPoint">The listener end point.</param>
+            <param name="ex">The ex.</param>
+            <exception cref="T:System.ArgumentNullException">
+            listenerEndPoint
+            or
+            ex
+            </exception>
+        </member>
+        <member name="P:Unosquare.Swan.ConnectionListenerFailedEventArgs.EndPoint">
+            <summary>
+            Gets the end point.
+            </summary>
+            <value>
+            The end point.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.ConnectionListenerFailedEventArgs.Error">
+            <summary>
+            Gets the error.
+            </summary>
+            <value>
+            The error.
+            </value>
+        </member>
+        <member name="T:Unosquare.Swan.ConnectionListenerStoppedEventArgs">
+            <summary>
+            Event arguments for when a server listener stopped
+            </summary>
+            <seealso cref="T:System.EventArgs" />
+        </member>
+        <member name="M:Unosquare.Swan.ConnectionListenerStoppedEventArgs.#ctor(System.Net.IPEndPoint,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.ConnectionListenerStoppedEventArgs" /> class.
+            </summary>
+            <param name="listenerEndPoint">The listener end point.</param>
+            <param name="ex">The ex.</param>
+            <exception cref="T:System.ArgumentNullException">
+            listenerEndPoint
+            or
+            ex
+            </exception>
+        </member>
+        <member name="P:Unosquare.Swan.ConnectionListenerStoppedEventArgs.EndPoint">
+            <summary>
+            Gets the end point.
+            </summary>
+            <value>
+            The end point.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.ConnectionListenerStoppedEventArgs.Error">
+            <summary>
+            Gets the error.
+            </summary>
+            <value>
+            The error.
+            </value>
+        </member>
+        <member name="T:Unosquare.Swan.ConnectionFailureEventArgs">
+            <summary>
+            The event arguments for connection failure events
+            </summary>
+            <seealso cref="T:System.EventArgs" />
+        </member>
+        <member name="M:Unosquare.Swan.ConnectionFailureEventArgs.#ctor(System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.ConnectionFailureEventArgs"/> class.
+            </summary>
+            <param name="ex">The ex.</param>
+        </member>
+        <member name="P:Unosquare.Swan.ConnectionFailureEventArgs.Error">
+            <summary>
+            Gets the error.
+            </summary>
+            <value>
+            The error.
+            </value>
+        </member>
+        <member name="T:Unosquare.Swan.ConnectionDataReceivedEventArgs">
+            <summary>
+            Event arguments for when data is received.
+            </summary>
+            <seealso cref="T:System.EventArgs" />
+        </member>
+        <member name="M:Unosquare.Swan.ConnectionDataReceivedEventArgs.#ctor(System.Byte[],Unosquare.Swan.ConnectionDataReceivedTrigger,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.ConnectionDataReceivedEventArgs"/> class.
+            </summary>
+            <param name="buffer">The buffer.</param>
+            <param name="trigger">The trigger.</param>
+            <param name="moreAvailable">if set to <c>true</c> [more available].</param>
+        </member>
+        <member name="P:Unosquare.Swan.ConnectionDataReceivedEventArgs.Buffer">
+            <summary>
+            Gets the buffer.
+            </summary>
+            <value>
+            The buffer.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.ConnectionDataReceivedEventArgs.Trigger">
+            <summary>
+            Gets the cause as to why this event was thrown
+            </summary>
+            <value>
+            The trigger.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.ConnectionDataReceivedEventArgs.HasMoreAvailable">
+            <summary>
+            Gets a value indicating whether the receive buffer has more bytes available
+            </summary>
+            <value>
+              <c>true</c> if this instance has more available; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="M:Unosquare.Swan.ConnectionDataReceivedEventArgs.GetStringFromBuffer(System.Byte[],System.Text.Encoding)">
+            <summary>
+            Gets the string from the given buffer.
+            </summary>
+            <param name="buffer">The buffer.</param>
+            <param name="encoding">The encoding.</param>
+            <returns>A <see cref="T:System.String" /> that contains the results of decoding the specified sequence of bytes</returns>
+        </member>
+        <member name="M:Unosquare.Swan.ConnectionDataReceivedEventArgs.GetStringFromBuffer(System.Text.Encoding)">
+            <summary>
+            Gets the string from buffer.
+            </summary>
+            <param name="encoding">The encoding.</param>
+            <returns>A <see cref="T:System.String" /> that contains the results of decoding the specified sequence of bytes</returns>
+        </member>
+        <member name="T:Unosquare.Swan.Exceptions.DependencyContainerRegistrationException">
+            <summary>
+            Generic Constraint Registration Exception
+            </summary>
+            <seealso cref="T:System.Exception" />
+        </member>
+        <member name="M:Unosquare.Swan.Exceptions.DependencyContainerRegistrationException.#ctor(System.Type,System.Collections.Generic.IEnumerable{System.Type})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.Exceptions.DependencyContainerRegistrationException"/> class.
+            </summary>
+            <param name="registerType">Type of the register.</param>
+            <param name="types">The types.</param>
+        </member>
+        <member name="M:Unosquare.Swan.Exceptions.DependencyContainerRegistrationException.#ctor(System.Type,System.String,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.Exceptions.DependencyContainerRegistrationException" /> class.
+            </summary>
+            <param name="type">The type.</param>
+            <param name="method">The method.</param>
+            <param name="isTypeFactory">if set to <c>true</c> [is type factory].</param>
+        </member>
+        <member name="T:Unosquare.Swan.Exceptions.DependencyContainerResolutionException">
+            <summary>
+            An exception for dependency resolutions
+            </summary>
+            <seealso cref="T:System.Exception" />
+        </member>
+        <member name="M:Unosquare.Swan.Exceptions.DependencyContainerResolutionException.#ctor(System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.Exceptions.DependencyContainerResolutionException"/> class.
+            </summary>
+            <param name="type">The type.</param>
+        </member>
+        <member name="M:Unosquare.Swan.Exceptions.DependencyContainerResolutionException.#ctor(System.Type,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.Exceptions.DependencyContainerResolutionException"/> class.
+            </summary>
+            <param name="type">The type.</param>
+            <param name="innerException">The inner exception.</param>
+        </member>
+        <member name="T:Unosquare.Swan.Exceptions.DependencyContainerWeakReferenceException">
+            <summary>
+            Weak Reference Exception
+            </summary>
+            <seealso cref="T:System.Exception" />
+        </member>
+        <member name="M:Unosquare.Swan.Exceptions.DependencyContainerWeakReferenceException.#ctor(System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.Exceptions.DependencyContainerWeakReferenceException"/> class.
+            </summary>
+            <param name="type">The type.</param>
+        </member>
+        <member name="T:Unosquare.Swan.Exceptions.DnsQueryException">
+            <summary>
+            An exception thrown when the DNS query fails.
+            </summary>
+            <seealso cref="T:System.Exception" />
+        </member>
+        <member name="T:Unosquare.Swan.Exceptions.JsonRequestException">
+            <summary>
+            Represents errors that occurs requesting a JSON file through HTTP
+            </summary>
+            <seealso cref="T:System.Exception" />
+        </member>
+        <member name="M:Unosquare.Swan.Exceptions.JsonRequestException.#ctor(System.String,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.Exceptions.JsonRequestException"/> class.
+            </summary>
+            <param name="message">The message.</param>
+            <param name="httpErrorCode">The HTTP error code.</param>
+        </member>
+        <member name="P:Unosquare.Swan.Exceptions.JsonRequestException.HttpErrorCode">
+            <summary>
+            Gets the HTTP error code.
+            </summary>
+            <value>
+            The HTTP error code.
+            </value>
+        </member>
+        <member name="T:Unosquare.Swan.Exceptions.SmtpException">
+            <summary>
+            Defines an SMTP Exceptions class
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Exceptions.SmtpException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.Exceptions.SmtpException" /> class with a message.
+            </summary>
+            <param name="message">The message.</param>
+        </member>
+        <member name="M:Unosquare.Swan.Exceptions.SmtpException.#ctor(Unosquare.Swan.Networking.SmtpStatusCode,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.Exceptions.SmtpException"/> class.
+            </summary>
+            <param name="replyCode">The SmtpStatusCode reply</param>
+            <param name="message">The exception message</param>
+        </member>
+        <member name="T:Unosquare.Swan.NetworkExtensions">
+            <summary>
+            Provides various extension methods for networking-related tasks
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.NetworkExtensions.IsPrivateAddress(System.Net.IPAddress)">
+            <summary>
+            Determines whether the IP address is private
+            </summary>
+            <param name="address">The IP address.</param>
+            <returns>
+            True if the IP Address is private; otherwise, false
+            </returns>
+            <exception cref="T:System.ArgumentNullException">address</exception>
+        </member>
+        <member name="M:Unosquare.Swan.NetworkExtensions.ToUInt32(System.Net.IPAddress)">
+            <summary>
+            Converts an IPv4 Address to its Unsigned, 32-bit integer representation.
+            </summary>
+            <param name="address">The address.</param>
+            <returns>
+            A 32-bit unsigned integer converted from four bytes at a specified position in a byte array
+            </returns>
+            <exception cref="T:System.ArgumentNullException">address</exception>
+            <exception cref="T:System.ArgumentException">InterNetwork - address</exception>
+        </member>
+        <member name="T:Unosquare.Swan.Models.OkOrError`2">
+            <summary>
+            Represents a Ok value or Error value
+            </summary>
+            <typeparam name="T">The type of OK value</typeparam>
+            <typeparam name="TError">The type of the error.</typeparam>
+        </member>
+        <member name="P:Unosquare.Swan.Models.OkOrError`2.IsOk">
+            <summary>
+            Gets or sets a value indicating whether this instance is ok.
+            </summary>
+            <value>
+              <c>true</c> if this instance is ok; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Models.OkOrError`2.Ok">
+            <summary>
+            Gets or sets the ok.
+            </summary>
+            <value>
+            The ok.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Models.OkOrError`2.Error">
+            <summary>
+            Gets or sets the error.
+            </summary>
+            <value>
+            The error.
+            </value>
+        </member>
+        <member name="T:Unosquare.Swan.Network">
+            <summary>
+            Provides miscellaneous network utilities such as a Public IP finder,
+            a DNS client to query DNS records of any kind, and an NTP client.
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Network.DnsDefaultPort">
+            <summary>
+            The DNS default port
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Network.NtpDefaultPort">
+            <summary>
+            The NTP default port
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Network.HostName">
+            <summary>
+            Gets the name of the host.
+            </summary>
+            <value>
+            The name of the host.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Network.DomainName">
+            <summary>
+            Gets the name of the network domain.
+            </summary>
+            <value>
+            The name of the network domain.
+            </value>
+        </member>
+        <member name="M:Unosquare.Swan.Network.GetIPv4Interfaces">
+            <summary>
+            Gets the active IPv4 interfaces.
+            Only those interfaces with a valid unicast address and a valid gateway will be returned in the collection
+            </summary>
+            <returns>
+            A collection of NetworkInterface/IPInterfaceProperties pairs
+            that represents the active IPv4 interfaces
+            </returns>
+        </member>
+        <member name="M:Unosquare.Swan.Network.GetIPv4Addresses(System.Boolean)">
+            <summary>
+            Retrieves the local ip addresses.
+            </summary>
+            <param name="includeLoopback">if set to <c>true</c> [include loopback].</param>
+            <returns>An array of local ip addresses</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Network.GetIPv4Addresses(System.Net.NetworkInformation.NetworkInterfaceType,System.Boolean,System.Boolean)">
+            <summary>
+            Retrieves the local ip addresses.
+            </summary>
+            <param name="interfaceType">Type of the interface.</param>
+            <param name="skipTypeFilter">if set to <c>true</c> [skip type filter].</param>
+            <param name="includeLoopback">if set to <c>true</c> [include loopback].</param>
+            <returns>An array of local ip addresses</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Network.GetPublicIPAddressAsync(System.Threading.CancellationToken)">
+            <summary>
+            Gets the public IP address using ipify.org.
+            </summary>
+            <param name="ct">The cancellation token.</param>
+            <returns>A public ip address of the result produced by this Task</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Network.GetPublicIPAddress">
+            <summary>
+            Gets the public IP address using ipify.org.
+            </summary>
+            <returns>A public ip address</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Network.GetIPv4DnsServers">
+            <summary>
+            Gets the configured IPv4 DNS servers for the active network interfaces.
+            </summary>
+            <returns>
+            A collection of NetworkInterface/IPInterfaceProperties pairs
+            that represents the active IPv4 interfaces
+            </returns>
+        </member>
+        <member name="M:Unosquare.Swan.Network.GetDnsHostEntry(System.String)">
+            <summary>
+            Gets the DNS host entry (a list of IP addresses) for the domain name.
+            </summary>
+            <param name="fqdn">The FQDN.</param>
+            <returns>An array of local ip addresses</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Network.GetDnsHostEntryAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Gets the DNS host entry (a list of IP addresses) for the domain name.
+            </summary>
+            <param name="fqdn">The FQDN.</param>
+            <param name="ct">The ct.</param>
+            <returns>An array of local ip addresses of the result produced by this task</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Network.GetDnsHostEntry(System.String,System.Net.IPAddress,System.Int32)">
+            <summary>
+            Gets the DNS host entry (a list of IP addresses) for the domain name.
+            </summary>
+            <param name="fqdn">The FQDN.</param>
+            <param name="dnsServer">The DNS server.</param>
+            <param name="port">The port.</param>
+            <returns>
+            An array of local ip addresses
+            </returns>
+            <exception cref="T:System.ArgumentNullException">fqdn</exception>
+        </member>
+        <member name="M:Unosquare.Swan.Network.GetDnsHostEntryAsync(System.String,System.Net.IPAddress,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Gets the DNS host entry (a list of IP addresses) for the domain name.
+            </summary>
+            <param name="fqdn">The FQDN.</param>
+            <param name="dnsServer">The DNS server.</param>
+            <param name="port">The port.</param>
+            <param name="ct">The cancellation token.</param>
+            <returns>An array of local ip addresses of the result produced by this task</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Network.GetDnsPointerEntry(System.Net.IPAddress,System.Net.IPAddress,System.Int32)">
+            <summary>
+            Gets the reverse lookup FQDN of the given IP Address.
+            </summary>
+            <param name="query">The query.</param>
+            <param name="dnsServer">The DNS server.</param>
+            <param name="port">The port.</param>
+            <returns>A <see cref="T:System.String" /> that represents the current object</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Network.GetDnsPointerEntryAsync(System.Net.IPAddress,System.Net.IPAddress,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Gets the reverse lookup FQDN of the given IP Address.
+            </summary>
+            <param name="query">The query.</param>
+            <param name="dnsServer">The DNS server.</param>
+            <param name="port">The port.</param>
+            <param name="ct">The ct.</param>
+            <returns>A <see cref="T:System.String" /> that represents the current object</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Network.GetDnsPointerEntry(System.Net.IPAddress)">
+            <summary>
+            Gets the reverse lookup FQDN of the given IP Address.
+            </summary>
+            <param name="query">The query.</param>
+            <returns>A <see cref="T:System.String" /> that represents the current object</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Network.GetDnsPointerEntryAsync(System.Net.IPAddress,System.Threading.CancellationToken)">
+            <summary>
+            Gets the reverse lookup FQDN of the given IP Address.
+            </summary>
+            <param name="query">The query.</param>
+            <param name="ct">The ct.</param>
+            <returns>A <see cref="T:System.String" /> that represents the current object</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Network.QueryDns(System.String,Unosquare.Swan.Networking.DnsRecordType,System.Net.IPAddress,System.Int32)">
+            <summary>
+            Queries the DNS server for the specified record type.
+            </summary>
+            <param name="query">The query.</param>
+            <param name="recordType">Type of the record.</param>
+            <param name="dnsServer">The DNS server.</param>
+            <param name="port">The port.</param>
+            <returns>
+            Appropriate DNS server for the specified record type
+            </returns>
+        </member>
+        <member name="M:Unosquare.Swan.Network.QueryDnsAsync(System.String,Unosquare.Swan.Networking.DnsRecordType,System.Net.IPAddress,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Queries the DNS server for the specified record type.
+            </summary>
+            <param name="query">The query.</param>
+            <param name="recordType">Type of the record.</param>
+            <param name="dnsServer">The DNS server.</param>
+            <param name="port">The port.</param>
+            <param name="ct">The ct.</param>
+            <returns>Queries the DNS server for the specified record type of the result produced by this Task</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Network.QueryDns(System.String,Unosquare.Swan.Networking.DnsRecordType)">
+            <summary>
+            Queries the DNS server for the specified record type.
+            </summary>
+            <param name="query">The query.</param>
+            <param name="recordType">Type of the record.</param>
+            <returns>Appropriate DNS server for the specified record type</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Network.QueryDnsAsync(System.String,Unosquare.Swan.Networking.DnsRecordType,System.Threading.CancellationToken)">
+            <summary>
+            Queries the DNS server for the specified record type.
+            </summary>
+            <param name="query">The query.</param>
+            <param name="recordType">Type of the record.</param>
+            <param name="ct">The cancellation token.</param>
+            <returns>Queries the DNS server for the specified record type of the result produced by this Task</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Network.GetNetworkTimeUtc(System.Net.IPAddress,System.Int32)">
+            <summary>
+            Gets the UTC time by querying from an NTP server
+            </summary>
+            <param name="ntpServerAddress">The NTP server address.</param>
+            <param name="port">The port.</param>
+            <returns>
+            A new instance of the DateTime structure to 
+            the specified year, month, day, hour, minute and second
+            </returns>
+        </member>
+        <member name="M:Unosquare.Swan.Network.GetNetworkTimeUtc(System.String,System.Int32)">
+            <summary>
+            Gets the UTC time by querying from an NTP server
+            </summary>
+            <param name="ntpServerName">The NTP server, by default pool.ntp.org.</param>
+            <param name="port">The port, by default NTP 123.</param>
+            <returns>The UTC time by querying from an NTP server</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Network.GetNetworkTimeUtcAsync(System.Net.IPAddress,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Gets the UTC time by querying from an NTP server
+            </summary>
+            <param name="ntpServerAddress">The NTP server address.</param>
+            <param name="port">The port.</param>
+            <param name="ct">The cancellation token.</param>
+            <returns>The UTC time by querying from an NTP server of the result produced by this Task</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Network.GetNetworkTimeUtcAsync(System.String,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Gets the UTC time by querying from an NTP server
+            </summary>
+            <param name="ntpServerName">Name of the NTP server.</param>
+            <param name="port">The port.</param>
+            <param name="ct">The cancellation token.</param>
+            <returns>The UTC time by querying from an NTP server of the result produced by this Task</returns>
+        </member>
+        <member name="T:Unosquare.Swan.Networking.ConnectionListener">
+            <summary>
+            TCP Listener manager with built-in events and asynchronous functionality.
+            This networking component is typically used when writing server software
+            </summary>
+            <seealso cref="T:System.IDisposable" />
+        </member>
+        <member name="E:Unosquare.Swan.Networking.ConnectionListener.OnConnectionAccepting">
+            <summary>
+            Occurs when a new connection requests a socket from the listener.
+            Set Cancel = true to prevent the TCP client from being accepted.
+            </summary>
+        </member>
+        <member name="E:Unosquare.Swan.Networking.ConnectionListener.OnConnectionAccepted">
+            <summary>
+            Occurs when a new connection is accepted.
+            </summary>
+        </member>
+        <member name="E:Unosquare.Swan.Networking.ConnectionListener.OnConnectionFailure">
+            <summary>
+            Occurs when a connection fails to get accepted
+            </summary>
+        </member>
+        <member name="E:Unosquare.Swan.Networking.ConnectionListener.OnListenerStopped">
+            <summary>
+            Occurs when the listener stops.
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.ConnectionListener.#ctor(System.Net.IPEndPoint)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.Networking.ConnectionListener"/> class.
+            </summary>
+            <param name="listenEndPoint">The listen end point.</param>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.ConnectionListener.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.Networking.ConnectionListener"/> class.
+            It uses the loopback address for listening
+            </summary>
+            <param name="listenPort">The listen port.</param>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.ConnectionListener.#ctor(System.Net.IPAddress,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.Networking.ConnectionListener"/> class.
+            </summary>
+            <param name="listenAddress">The listen address.</param>
+            <param name="listenPort">The listen port.</param>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.ConnectionListener.Finalize">
+            <summary>
+            Finalizes an instance of the <see cref="T:Unosquare.Swan.Networking.ConnectionListener"/> class.
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.ConnectionListener.LocalEndPoint">
+            <summary>
+            Gets the local end point on which we are listening.
+            </summary>
+            <value>
+            The local end point.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.ConnectionListener.IsListening">
+            <summary>
+            Gets a value indicating whether this listener is active
+            </summary>
+            <value>
+              <c>true</c> if this instance is listening; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.ConnectionListener.Id">
+            <summary>
+            Gets a unique identifier that gets automatically assigned upon instantiation of this class.
+            </summary>
+            <value>
+            The unique identifier.
+            </value>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.ConnectionListener.Start">
+            <summary>
+            Starts the listener in an asynchronous, non-blocking fashion.
+            Subscribe to the events of this class to gain access to connected client sockets.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">Cancellation has already been requested. This listener is not reusable.</exception>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.ConnectionListener.DoWorkAsync">
+            <summary>
+            Continuously checks for client connections until the Close method has been called.
+            </summary>
+            <returns>A task that represents the asynchronous connection operation</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.ConnectionListener.Stop">
+            <summary>
+            Stops the listener from receiving new connections.
+            This does not prevent the listener from 
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.ConnectionListener.ToString">
+            <summary>
+            Returns a <see cref="T:System.String" /> that represents this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String" /> that represents this instance.
+            </returns>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.ConnectionListener.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.ConnectionListener.Dispose(System.Boolean)">
+            <summary>
+            Releases unmanaged and - optionally - managed resources.
+            </summary>
+            <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        </member>
+        <member name="T:Unosquare.Swan.Networking.DnsClient">
+            <summary>
+            DnsClient public methods
+            </summary>
+            <summary>
+            DnsClient public interfaces
+            </summary>
+            <summary>
+            DnsClient Request inner class
+            </summary>
+            <summary>
+            DnsClient Response inner class
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.DnsClient.DnsClientRequest.Resolve">
+            <summary>
+            Resolves this request into a response using the provided DNS information. The given
+            request strategy is used to retrieve the response.
+            </summary>
+            <exception cref="T:Unosquare.Swan.Exceptions.DnsQueryException">Throw if a malformed response is received from the server</exception>
+            <exception cref="T:System.IO.IOException">Thrown if a IO error occurs</exception>
+            <exception cref="T:System.Net.Sockets.SocketException">Thrown if a the reading or writing to the socket fails</exception>
+            <returns>The response received from server</returns>
+        </member>
+        <member name="T:Unosquare.Swan.Networking.DnsQueryResult">
+            <summary>
+            Represents a response from a DNS server
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.DnsQueryResult.#ctor(Unosquare.Swan.Networking.DnsClient.DnsClientResponse)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.Networking.DnsQueryResult"/> class.
+            </summary>
+            <param name="response">The response.</param>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.DnsQueryResult.Id">
+            <summary>
+            Gets the identifier.
+            </summary>
+            <value>
+            The identifier.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.DnsQueryResult.IsAuthoritativeServer">
+            <summary>
+            Gets a value indicating whether this instance is authoritative server.
+            </summary>
+            <value>
+            <c>true</c> if this instance is authoritative server; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.DnsQueryResult.IsTruncated">
+            <summary>
+            Gets a value indicating whether this instance is truncated.
+            </summary>
+            <value>
+            <c>true</c> if this instance is truncated; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.DnsQueryResult.IsRecursionAvailable">
+            <summary>
+            Gets a value indicating whether this instance is recursion available.
+            </summary>
+            <value>
+            <c>true</c> if this instance is recursion available; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.DnsQueryResult.OperationCode">
+            <summary>
+            Gets the operation code.
+            </summary>
+            <value>
+            The operation code.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.DnsQueryResult.ResponseCode">
+            <summary>
+            Gets the response code.
+            </summary>
+            <value>
+            The response code.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.DnsQueryResult.AnswerRecords">
+            <summary>
+            Gets the answer records.
+            </summary>
+            <value>
+            The answer records.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.DnsQueryResult.AdditionalRecords">
+            <summary>
+            Gets the additional records.
+            </summary>
+            <value>
+            The additional records.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.DnsQueryResult.AuthorityRecords">
+            <summary>
+            Gets the authority records.
+            </summary>
+            <value>
+            The authority records.
+            </value>
+        </member>
+        <member name="T:Unosquare.Swan.Networking.DnsRecord">
+            <summary>
+            Represents a DNS record entry
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.DnsRecord.#ctor(Unosquare.Swan.Networking.DnsClient.IDnsResourceRecord)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.Networking.DnsRecord"/> class.
+            </summary>
+            <param name="record">The record.</param>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.DnsRecord.Name">
+            <summary>
+            Gets the name.
+            </summary>
+            <value>
+            The name.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.DnsRecord.Type">
+            <summary>
+            Gets the type.
+            </summary>
+            <value>
+            The type.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.DnsRecord.Class">
+            <summary>
+            Gets the class.
+            </summary>
+            <value>
+            The class.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.DnsRecord.TimeToLive">
+            <summary>
+            Gets the time to live.
+            </summary>
+            <value>
+            The time to live.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.DnsRecord.Data">
+            <summary>
+            Gets the raw data of the record.
+            </summary>
+            <value>
+            The data.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.DnsRecord.DataText">
+            <summary>
+            Gets the data text bytes in ASCII encoding.
+            </summary>
+            <value>
+            The data text.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.DnsRecord.PointerDomainName">
+            <summary>
+            Gets the name of the pointer domain.
+            </summary>
+            <value>
+            The name of the pointer domain.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.DnsRecord.IPAddress">
+            <summary>
+            Gets the ip address.
+            </summary>
+            <value>
+            The ip address.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.DnsRecord.NameServerDomainName">
+            <summary>
+            Gets the name of the name server domain.
+            </summary>
+            <value>
+            The name of the name server domain.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.DnsRecord.CanonicalDomainName">
+            <summary>
+            Gets the name of the canonical domain.
+            </summary>
+            <value>
+            The name of the canonical domain.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.DnsRecord.MailExchangerPreference">
+            <summary>
+            Gets the mail exchanger preference.
+            </summary>
+            <value>
+            The mail exchanger preference.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.DnsRecord.MailExchangerDomainName">
+            <summary>
+            Gets the name of the mail exchanger domain.
+            </summary>
+            <value>
+            The name of the mail exchanger domain.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.DnsRecord.SoaMasterDomainName">
+            <summary>
+            Gets the name of the soa master domain.
+            </summary>
+            <value>
+            The name of the soa master domain.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.DnsRecord.SoaResponsibleDomainName">
+            <summary>
+            Gets the name of the soa responsible domain.
+            </summary>
+            <value>
+            The name of the soa responsible domain.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.DnsRecord.SoaSerialNumber">
+            <summary>
+            Gets the soa serial number.
+            </summary>
+            <value>
+            The soa serial number.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.DnsRecord.SoaRefreshInterval">
+            <summary>
+            Gets the soa refresh interval.
+            </summary>
+            <value>
+            The soa refresh interval.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.DnsRecord.SoaRetryInterval">
+            <summary>
+            Gets the soa retry interval.
+            </summary>
+            <value>
+            The soa retry interval.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.DnsRecord.SoaExpireInterval">
+            <summary>
+            Gets the soa expire interval.
+            </summary>
+            <value>
+            The soa expire interval.
+            </value>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.DnsRecord.SoaMinimumTimeToLive">
+            <summary>
+            Gets the soa minimum time to live.
+            </summary>
+            <value>
+            The soa minimum time to live.
+            </value>
+        </member>
+        <member name="T:Unosquare.Swan.Networking.DnsRecordType">
+            <summary>
+            Enumerates the different DNS record types
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.DnsRecordType.A">
+            <summary>
+            A records
+            </summary> 
+        </member>
+        <member name="F:Unosquare.Swan.Networking.DnsRecordType.NS">
+            <summary>
+            Nameserver records
+            </summary> 
+        </member>
+        <member name="F:Unosquare.Swan.Networking.DnsRecordType.CNAME">
+            <summary>
+            CNAME records
+            </summary> 
+        </member>
+        <member name="F:Unosquare.Swan.Networking.DnsRecordType.SOA">
+            <summary>
+            SOA records
+            </summary> 
+        </member>
+        <member name="F:Unosquare.Swan.Networking.DnsRecordType.WKS">
+            <summary>
+            WKS records
+            </summary> 
+        </member>
+        <member name="F:Unosquare.Swan.Networking.DnsRecordType.PTR">
+            <summary>
+            PTR records
+            </summary> 
+        </member>
+        <member name="F:Unosquare.Swan.Networking.DnsRecordType.MX">
+            <summary>
+            MX records
+            </summary> 
+        </member>
+        <member name="F:Unosquare.Swan.Networking.DnsRecordType.TXT">
+            <summary>
+            TXT records
+            </summary> 
+        </member>
+        <member name="F:Unosquare.Swan.Networking.DnsRecordType.AAAA">
+            <summary>
+            A records fot IPv6
+            </summary> 
+        </member>
+        <member name="F:Unosquare.Swan.Networking.DnsRecordType.SRV">
+            <summary>
+            SRV records
+            </summary> 
+        </member>
+        <member name="F:Unosquare.Swan.Networking.DnsRecordType.ANY">
+            <summary>
+            ANY records
+            </summary> 
+        </member>
+        <member name="T:Unosquare.Swan.Networking.DnsRecordClass">
+            <summary>
+            Enumerates the different DNS record classes
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.DnsRecordClass.IN">
+            <summary>
+            IN records
+            </summary> 
+        </member>
+        <member name="F:Unosquare.Swan.Networking.DnsRecordClass.ANY">
+            <summary>
+            ANY records
+            </summary> 
+        </member>
+        <member name="T:Unosquare.Swan.Networking.DnsOperationCode">
+            <summary>
+            Enumerates the different DNS operation codes
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.DnsOperationCode.Query">
+            <summary>
+            Query operation
+            </summary> 
+        </member>
+        <member name="F:Unosquare.Swan.Networking.DnsOperationCode.IQuery">
+            <summary>
+            IQuery operation
+            </summary> 
+        </member>
+        <member name="F:Unosquare.Swan.Networking.DnsOperationCode.Status">
+            <summary>
+            Status operation
+            </summary> 
+        </member>
+        <member name="F:Unosquare.Swan.Networking.DnsOperationCode.Notify">
+            <summary>
+            Notify operation
+            </summary> 
+        </member>
+        <member name="F:Unosquare.Swan.Networking.DnsOperationCode.Update">
+            <summary>
+            Update operation
+            </summary> 
+        </member>
+        <member name="T:Unosquare.Swan.Networking.DnsResponseCode">
+            <summary>
+            Enumerates the different DNS query response codes
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.DnsResponseCode.NoError">
+            <summary>
+            No error
+            </summary> 
+        </member>
+        <member name="F:Unosquare.Swan.Networking.DnsResponseCode.FormatError">
+            <summary>
+            No error
+            </summary> 
+        </member>
+        <member name="F:Unosquare.Swan.Networking.DnsResponseCode.ServerFailure">
+            <summary>
+            Format error
+            </summary> 
+        </member>
+        <member name="F:Unosquare.Swan.Networking.DnsResponseCode.NameError">
+            <summary>
+            Server failure error
+            </summary> 
+        </member>
+        <member name="F:Unosquare.Swan.Networking.DnsResponseCode.NotImplemented">
+            <summary>
+            Name error
+            </summary> 
+        </member>
+        <member name="F:Unosquare.Swan.Networking.DnsResponseCode.Refused">
+            <summary>
+            Not implemented error
+            </summary> 
+        </member>
+        <member name="F:Unosquare.Swan.Networking.DnsResponseCode.YXDomain">
+            <summary>
+            Refused error
+            </summary> 
+        </member>
+        <member name="F:Unosquare.Swan.Networking.DnsResponseCode.YXRRSet">
+            <summary>
+            YXRR error
+            </summary> 
+        </member>
+        <member name="F:Unosquare.Swan.Networking.DnsResponseCode.NXRRSet">
+            <summary>
+            NXRR Set error
+            </summary> 
+        </member>
+        <member name="F:Unosquare.Swan.Networking.DnsResponseCode.NotAuth">
+            <summary>
+            Not authorized error
+            </summary> 
+        </member>
+        <member name="F:Unosquare.Swan.Networking.DnsResponseCode.NotZone">
+            <summary>
+            Not zone error
+            </summary> 
+        </member>
+        <member name="T:Unosquare.Swan.Networking.SmtpStatusCode">
+            <summary>
+            Defines the different SMTP status codes
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpStatusCode.SystemStatus">
+            <summary>
+            System code
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpStatusCode.HelpMessage">
+            <summary>
+            Help message code
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpStatusCode.ServiceReady">
+            <summary>
+            Service ready code
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpStatusCode.ServiceClosingTransmissionChannel">
+            <summary>
+            Service closing channel code
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpStatusCode.Ok">
+            <summary>
+            OK Code
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpStatusCode.UserNotLocalWillForward">
+            <summary>
+            User not local code
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpStatusCode.CannotVerifyUserWillAttemptDelivery">
+            <summary>
+            Cannot verify user code
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpStatusCode.StartMailInput">
+            <summary>
+            Start Mail Input code
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpStatusCode.ServiceNotAvailable">
+            <summary>
+            Service Not Available code
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpStatusCode.MailboxBusy">
+            <summary>
+            Mailbox Busy code
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpStatusCode.LocalErrorInProcessing">
+            <summary>
+            Local Error code
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpStatusCode.InsufficientStorage">
+            <summary>
+            Insufficient storage code
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpStatusCode.ClientNotPermitted">
+            <summary>
+            Client not permitted code
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpStatusCode.CommandUnrecognized">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpStatusCode.SyntaxError">
+            <summary>
+            Syntax error
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpStatusCode.CommandNotImplemented">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpStatusCode.BadCommandSequence">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpStatusCode.MustIssueStartTlsFirst">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpStatusCode.CommandParameterNotImplemented">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpStatusCode.MailboxUnavailable">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpStatusCode.UserNotLocalTryAlternatePath">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpStatusCode.ExceededStorageAllocation">
+            <summary>
+            Exceeded Storage Allocation code
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpStatusCode.MailboxNameNotAllowed">
+            <summary>
+            Mailbox name not allowed code
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpStatusCode.TransactionFailed">
+            <summary>
+            Transaction failed code
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpStatusCode.GeneralFailure">
+            <summary>
+            General Failure code
+            </summary>
+        </member>
+        <member name="T:Unosquare.Swan.Networking.SmtpCommandNames">
+            <summary>
+            Enumerates all of the well-known SMTP command names.
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpCommandNames.Unknown">
+            <summary>
+            An unknown command
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpCommandNames.HELO">
+            <summary>
+            The helo command
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpCommandNames.EHLO">
+            <summary>
+            The ehlo command
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpCommandNames.QUIT">
+            <summary>
+            The quit command
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpCommandNames.HELP">
+            <summary>
+            The help command
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpCommandNames.NOOP">
+            <summary>
+            The noop command
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpCommandNames.RSET">
+            <summary>
+            The rset command
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpCommandNames.MAIL">
+            <summary>
+            The mail command
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpCommandNames.DATA">
+            <summary>
+            The data command
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpCommandNames.SEND">
+            <summary>
+            The send command
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpCommandNames.SOML">
+            <summary>
+            The soml command
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpCommandNames.SAML">
+            <summary>
+            The saml command
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpCommandNames.RCPT">
+            <summary>
+            The RCPT command
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpCommandNames.VRFY">
+            <summary>
+            The vrfy command
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpCommandNames.EXPN">
+            <summary>
+            The expn command
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpCommandNames.STARTTLS">
+            <summary>
+            The starttls command
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpCommandNames.AUTH">
+            <summary>
+            The authentication command
+            </summary>
+        </member>
+        <member name="T:Unosquare.Swan.Networking.SmtpReplyCodeSeverities">
+            <summary>
+            Enumerates the reply code severities
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpReplyCodeSeverities.Unknown">
+            <summary>
+            The unknown severity
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpReplyCodeSeverities.PositiveCompletion">
+            <summary>
+            The positive completion severity
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpReplyCodeSeverities.PositiveIntermediate">
+            <summary>
+            The positive intermediate severity
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpReplyCodeSeverities.TransientNegative">
+            <summary>
+            The transient negative severity
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpReplyCodeSeverities.PermanentNegative">
+            <summary>
+            The permanent negative severity
+            </summary>
+        </member>
+        <member name="T:Unosquare.Swan.Networking.SmtpReplyCodeCategories">
+            <summary>
+            Enumerates the reply code categories
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpReplyCodeCategories.Unknown">
+            <summary>
+            The unknown category
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpReplyCodeCategories.Syntax">
+            <summary>
+            The syntax category
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpReplyCodeCategories.Information">
+            <summary>
+            The information category
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpReplyCodeCategories.Connections">
+            <summary>
+            The connections category
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpReplyCodeCategories.UnspecifiedA">
+            <summary>
+            The unspecified a category
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpReplyCodeCategories.UnspecifiedB">
+            <summary>
+            The unspecified b category
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpReplyCodeCategories.System">
+            <summary>
+            The system category
+            </summary>
+        </member>
+        <member name="T:Unosquare.Swan.Networking.JsonClient">
+            <summary>
+            Represents a HttpClient with extended methods to use with JSON payloads 
+            and bearer tokens authentication
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.JsonClient.Post``1(System.String,System.Object,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Post a object as JSON with optional authorization token.
+            </summary>
+            <typeparam name="T">The type of response object</typeparam>
+            <param name="url">The URL.</param>
+            <param name="payload">The payload.</param>
+            <param name="authorization">The authorization.</param>
+            <param name="ct">The cancellation token.</param>
+            <returns>A task with a result of the requested type</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.JsonClient.PostOrError``2(System.String,System.Object,System.Int32,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Posts a object as JSON with optional authorization token and retrieve an object
+            or an error.
+            </summary>
+            <typeparam name="T">The type of response object</typeparam>
+            <typeparam name="TE">The type of the error.</typeparam>
+            <param name="url">The URL.</param>
+            <param name="payload">The payload.</param>
+            <param name="httpStatusError">The HTTP status error.</param>
+            <param name="authorization">The authorization.</param>
+            <param name="ct">The cancellation token.</param>
+            <returns>A task with a result of the requested type or an error object</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.JsonClient.Post(System.String,System.Object,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Posts the specified URL.
+            </summary>
+            <param name="url">The URL.</param>
+            <param name="payload">The payload.</param>
+            <param name="authorization">The authorization.</param>
+            <param name="ct">The cancellation token.</param>
+            <returns>A task with a result as a collection of key/value pairs</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.JsonClient.PostString(System.String,System.Object,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Posts the specified URL.
+            </summary>
+            <param name="url">The URL.</param>
+            <param name="payload">The payload.</param>
+            <param name="authorization">The authorization.</param>
+            <param name="ct">The cancellation token.</param>
+            <returns>
+            A task with a result of the requested string
+            </returns>
+            <exception cref="T:System.ArgumentNullException">url</exception>
+            <exception cref="T:Unosquare.Swan.Exceptions.JsonRequestException">Error POST JSON</exception>
+            <exception cref="T:Unosquare.Swan.Exceptions.JsonRequestException">Error POST Json.</exception>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.JsonClient.Put``1(System.String,System.Object,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Puts the specified URL.
+            </summary>
+            <typeparam name="T">The type of response object</typeparam>
+            <param name="url">The URL.</param>
+            <param name="payload">The payload.</param>
+            <param name="authorization">The authorization.</param>
+            <param name="ct">The cancellation token.</param>
+            <returns>A task with a result of the requested type</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.JsonClient.Put(System.String,System.Object,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Puts the specified URL.
+            </summary>
+            <param name="url">The URL.</param>
+            <param name="payload">The payload.</param>
+            <param name="authorization">The authorization.</param>
+            <param name="ct">The cancellation token.</param>
+            <returns>A task with a result of the requested collection of key/value pairs</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.JsonClient.PutString(System.String,System.Object,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Puts as string.
+            </summary>
+            <param name="url">The URL.</param>
+            <param name="payload">The payload.</param>
+            <param name="authorization">The authorization.</param>
+            <param name="ct">The cancellation token.</param>
+            <returns>
+            A task with a result of the requested string
+            </returns>
+            <exception cref="T:System.ArgumentNullException">url</exception>
+            <exception cref="T:Unosquare.Swan.Exceptions.JsonRequestException">Error PUT JSON</exception>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.JsonClient.GetString(System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Gets as string.
+            </summary>
+            <param name="url">The URL.</param>
+            <param name="authorization">The authorization.</param>
+            <param name="ct">The cancellation token.</param>
+            <returns>
+            A task with a result of the requested string
+            </returns>
+            <exception cref="T:System.ArgumentNullException">url</exception>
+            <exception cref="T:Unosquare.Swan.Exceptions.JsonRequestException">Error GET JSON</exception>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.JsonClient.Get``1(System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Gets the specified URL and return the JSON data as object
+            with optional authorization token.
+            </summary>
+            <typeparam name="T">The response type</typeparam>
+            <param name="url">The URL.</param>
+            <param name="authorization">The authorization.</param>
+            <param name="ct">The cancellation token.</param>
+            <returns>A task with a result of the requested type</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.JsonClient.GetBinary(System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Gets the binary.
+            </summary>
+            <param name="url">The URL.</param>
+            <param name="authorization">The authorization.</param>
+            <param name="ct">The cancellation token.</param>
+            <returns>
+            A task with a result of the requested byte array
+            </returns>
+            <exception cref="T:System.ArgumentNullException">url</exception>
+            <exception cref="T:Unosquare.Swan.Exceptions.JsonRequestException">Error GET Binary</exception>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.JsonClient.Authenticate(System.String,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Authenticate against a web server using Bearer Token
+            </summary>
+            <param name="url">The URL.</param>
+            <param name="username">The username.</param>
+            <param name="password">The password.</param>
+            <param name="ct">The cancellation token.</param>
+            <returns>
+            A task with a Dictionary with authentication data
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            url
+            or
+            username
+            </exception>
+            <exception cref="T:System.Security.SecurityException">Error Authenticating</exception>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.JsonClient.PostFileString(System.String,System.Byte[],System.String,System.String)">
+            <summary>
+            Posts the file.
+            </summary>
+            <param name="url">The URL.</param>
+            <param name="buffer">The buffer.</param>
+            <param name="fileName">Name of the file.</param>
+            <param name="authorization">The authorization.</param>
+            <returns>A task with a result of the requested string</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.JsonClient.PostFile``1(System.String,System.Byte[],System.String,System.String)">
+            <summary>
+            Posts the file.
+            </summary>
+            <typeparam name="T">The response type</typeparam>
+            <param name="url">The URL.</param>
+            <param name="buffer">The buffer.</param>
+            <param name="fileName">Name of the file.</param>
+            <param name="authorization">The authorization.</param>
+            <returns>A task with a result of the requested string</returns>
+        </member>
+        <member name="T:Unosquare.Swan.Networking.SmtpDefinitions">
+            <summary>
+            Contains useful constants and definitions
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpDefinitions.SmtpDataCommandTerminator">
+            <summary>
+            The string sequence that delimits the end of the DATA command
+            </summary>
+        </member>
+        <member name="T:Unosquare.Swan.Networking.SmtpDefinitions.SmtpAuthMethods">
+            <summary>
+            Lists the AUTH methods supported by default.
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpDefinitions.SmtpAuthMethods.Plain">
+            <summary>
+            The plain method
+            </summary>
+        </member>
+        <member name="F:Unosquare.Swan.Networking.SmtpDefinitions.SmtpAuthMethods.Login">
+            <summary>
+            The login method
+            </summary>
+        </member>
+        <member name="T:Unosquare.Swan.Networking.SmtpServerReply">
+            <summary>
+            Represents an SMTP server response object
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.SmtpServerReply.#ctor(System.Int32,System.String,System.String[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.Networking.SmtpServerReply"/> class.
+            </summary>
+            <param name="responseCode">The response code.</param>
+            <param name="statusCode">The status code.</param>
+            <param name="content">The content.</param>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.SmtpServerReply.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.Networking.SmtpServerReply"/> class.
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.SmtpServerReply.#ctor(System.Int32,System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.Networking.SmtpServerReply"/> class.
+            </summary>
+            <param name="responseCode">The response code.</param>
+            <param name="statusCode">The status code.</param>
+            <param name="content">The content.</param>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.SmtpServerReply.#ctor(System.Int32,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.Networking.SmtpServerReply"/> class.
+            </summary>
+            <param name="responseCode">The response code.</param>
+            <param name="content">The content.</param>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.SmtpServerReply.CommandUnrecognized">
+            <summary>
+            Gets the command unrecognized reply.
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.SmtpServerReply.SyntaxErrorArguments">
+            <summary>
+            Gets the syntax error arguments reply.
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.SmtpServerReply.CommandNotImplemented">
+            <summary>
+            Gets the command not implemented reply.
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.SmtpServerReply.BadSequenceOfCommands">
+            <summary>
+            Gets the bad sequence of commands reply.
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.SmtpServerReply.ProtocolViolation">
+            <summary>
+            Gets the protocol violation reply.
+            </summary>=
+        </member>
+        <member name="P:Unosquare.Swan.Networking.SmtpServerReply.SystemStatusBye">
+            <summary>
+            Gets the system status bye reply.
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.SmtpServerReply.SystemStatusHelp">
+            <summary>
+            Gets the system status help reply.
+            </summary>=
+        </member>
+        <member name="P:Unosquare.Swan.Networking.SmtpServerReply.BadSyntaxCommandEmpty">
+            <summary>
+            Gets the bad syntax command empty reply.
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.SmtpServerReply.Ok">
+            <summary>
+            Gets the OK reply.
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.SmtpServerReply.AuthorizationRequired">
+            <summary>
+            Gets the authorization required reply.
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.SmtpServerReply.ReplyCodeSeverity">
+            <summary>
+            Gets the response severity.
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.SmtpServerReply.ReplyCodeCategory">
+            <summary>
+            Gets the response category.
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.SmtpServerReply.ReplyCode">
+            <summary>
+            Gets the numeric response code.
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.SmtpServerReply.EnhancedStatusCode">
+            <summary>
+            Gets the enhanced status code.
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.SmtpServerReply.Content">
+            <summary>
+            Gets the content.
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.SmtpServerReply.IsValid">
+            <summary>
+            Returns true if the response code is between 200 and 599
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.SmtpServerReply.IsPositive">
+            <summary>
+            Gets a value indicating whether this instance is positive.
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.SmtpServerReply.Parse(System.String)">
+            <summary>
+            Parses the specified text into a Server Reply for thorough analysis.
+            </summary>
+            <param name="text">The text.</param>
+            <returns>A new instance of SMTP server response object</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.SmtpServerReply.ToString">
+            <summary>
+            Returns a <see cref="T:System.String" /> that represents this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String" /> that represents this instance.
+            </returns>
+        </member>
+        <member name="T:Unosquare.Swan.Networking.SmtpSessionState">
+            <summary>
+            Represents the state of an SMTP session associated with a client
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.SmtpSessionState.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Unosquare.Swan.Networking.SmtpSessionState"/> class.
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.SmtpSessionState.DataBuffer">
+            <summary>
+            Gets the contents of the data buffer.
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.SmtpSessionState.HasInitiated">
+            <summary>
+            Gets or sets a value indicating whether this instance has initiated.
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.SmtpSessionState.SupportsExtensions">
+            <summary>
+            Gets or sets a value indicating whether the current session supports extensions.
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.SmtpSessionState.ClientHostname">
+            <summary>
+            Gets or sets the client hostname.
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.SmtpSessionState.IsInDataMode">
+            <summary>
+            Gets or sets a value indicating whether the session is currently receiving DATA
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.SmtpSessionState.SenderAddress">
+            <summary>
+            Gets or sets the sender address.
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.SmtpSessionState.Recipients">
+            <summary>
+            Gets the recipients.
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.SmtpSessionState.ExtendedData">
+            <summary>
+            Gets or sets the extended data supporting any additional field for storage by a responder implementation.
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.SmtpSessionState.IsInAuthMode">
+            <summary>
+            Gets or sets a value indicating whether this instance is in authentication mode.
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.SmtpSessionState.Username">
+            <summary>
+            Gets or sets the username.
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.SmtpSessionState.Password">
+            <summary>
+            Gets or sets the password.
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.SmtpSessionState.HasProvidedUsername">
+            <summary>
+            Gets a value indicating whether this instance has provided username.
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.SmtpSessionState.IsAuthenticated">
+            <summary>
+            Gets or sets a value indicating whether this instance is authenticated.
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.SmtpSessionState.AuthMode">
+            <summary>
+            Gets or sets the authentication mode.
+            </summary>
+        </member>
+        <member name="P:Unosquare.Swan.Networking.SmtpSessionState.IsChannelSecure">
+            <summary>
+            Gets or sets a value indicating whether this instance is channel secure.
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.SmtpSessionState.ResetAuthentication">
+            <summary>
+            Resets the authentication state.
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.SmtpSessionState.ResetEmail">
+            <summary>
+            Resets the data mode to false, clears the recipients, the sender address and the data buffer
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.SmtpSessionState.Reset(System.Boolean)">
+            <summary>
+            Resets the state table entirely
+            </summary>
+            <param name="clearExtensionData">if set to <c>true</c> [clear extension data].</param>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.SmtpSessionState.Clone">
+            <summary>
+            Creates a new object that is a copy of the current instance.
+            </summary>
+            <returns>A clone</returns>
+        </member>
+        <member name="T:Unosquare.Swan.Networking.SnmpClient">
+            <summary>
+            Represents a little SNMP client based on http://www.java2s.com/Code/CSharp/Network/SimpleSNMP.htm
+            </summary>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.SnmpClient.Discover(System.Int32)">
+            <summary>
+            Discovers the specified SNMP time out.
+            </summary>
+            <param name="snmpTimeOut">The SNMP time out.</param>
+            <returns>An array of network endpoint as an IP address and a port number</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.SnmpClient.GetPublicName(System.Net.IPEndPoint)">
+            <summary>
+            Gets the name of the public.
+            </summary>
+            <param name="host">The host.</param>
+            <returns>
+            A string that contains the results of decoding the specified sequence 
+            of bytes ref=GetString"
+            </returns>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.SnmpClient.GetUptime(System.Net.IPEndPoint,System.String)">
+            <summary>
+            Gets the uptime.
+            </summary>
+            <param name="host">The host.</param>
+            <param name="mibstring">The mibstring.</param>
+            <returns>
+             A time interval that represents a specified number of seconds, 
+             where the specification is accurate to the nearest millisecond
+             </returns>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.SnmpClient.GetString(System.Net.IPEndPoint,System.String)">
+            <summary>
+            Gets the string.
+            </summary>
+            <param name="host">The host.</param>
+            <param name="mibstring">The mibstring.</param>
+            <returns>A <see cref="T:System.String" /> that contains the results of decoding the specified sequence of bytes</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.SnmpClient.Get(System.Net.IPEndPoint,System.String)">
+            <summary>
+            Gets the specified host.
+            </summary>
+            <param name="host">The host.</param>
+            <param name="mibstring">The mibstring.</param>
+            <returns>A byte array containing the results of encoding the specified set of characters</returns>
+        </member>
+        <member name="M:Unosquare.Swan.Networking.SnmpClient.Get(System.String,System.Net.IPEndPoint,System.String,System.String)">
+            <summary>
+            Gets the specified request.
+            </summary>
+            <param name="request">The request.</param>
+            <param name="host">The host.</param>
+            <param name="community">The community.</param>
+            <param name="mibstring">The mibstring.</param>
+            <returns>A byte array containing the results of encoding the specified set of characters</returns>
+        </member>
+    </members>
+</doc>
