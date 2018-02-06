@@ -148,6 +148,7 @@ namespace GHI.UWP.Shields.FEZHAT
                     this.pwm.Dispose();
                     this.analog.Dispose();
                     this.accelerometer.Dispose();
+                    i2cBus.Dispose();
                     //this.motorEnable.Dispose();
                     //this.dio16.Dispose();
                     //this.dio26.Dispose();

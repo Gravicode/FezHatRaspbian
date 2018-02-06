@@ -30,3 +30,4 @@ C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan.Lite\obj\Debug\uap10.
 C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan.Lite\obj\Debug\uap10.0\Unosquare.Swan.Lite.dll
 C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan.Lite\obj\Debug\uap10.0\Unosquare.Swan.Lite.xml
 C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan.Lite\obj\Debug\uap10.0\Unosquare.Swan.Lite.pdb
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan.Lite\obj\Debug\uap10.0\Unosquare.Swan.Lite.csprojResolveAssemblyReference.cache

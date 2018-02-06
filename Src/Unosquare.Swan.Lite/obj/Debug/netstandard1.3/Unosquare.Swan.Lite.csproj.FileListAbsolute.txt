@@ -31,3 +31,4 @@ C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan.Lite\obj\Debug\netsta
 C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan.Lite\obj\Debug\netstandard1.3\Unosquare.Swan.Lite.dll
 C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan.Lite\obj\Debug\netstandard1.3\Unosquare.Swan.Lite.xml
 C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan.Lite\obj\Debug\netstandard1.3\Unosquare.Swan.Lite.pdb
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan.Lite\obj\Debug\netstandard1.3\Unosquare.Swan.Lite.csprojResolveAssemblyReference.cache

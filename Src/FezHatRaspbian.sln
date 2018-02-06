@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MonoLinuxI2C", "MonoLinuxI2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mono.Linux.I2C", "Mono.Linux.I2C\Mono.Linux.I2C.csproj", "{B70915EA-3F00-492D-8011-E01B746DD050}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestAzureIoT", "TestAzureIoT\TestAzureIoT.csproj", "{69628F83-9B32-4923-957E-FEAF494E7127}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{B70915EA-3F00-492D-8011-E01B746DD050}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B70915EA-3F00-492D-8011-E01B746DD050}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B70915EA-3F00-492D-8011-E01B746DD050}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69628F83-9B32-4923-957E-FEAF494E7127}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69628F83-9B32-4923-957E-FEAF494E7127}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69628F83-9B32-4923-957E-FEAF494E7127}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69628F83-9B32-4923-957E-FEAF494E7127}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -71,8 +77,10 @@ Global
 		{A9C359CF-4CAB-4B37-A05A-1493A107DEEE} = {B664F22E-DBF0-44F3-A161-CBE2CF4AF386}
 		{F68FC5D3-B09E-42A6-BC4F-A867E32A537A} = {D61D7726-EB19-4C45-B03E-D5D095923871}
 		{B70915EA-3F00-492D-8011-E01B746DD050} = {967E733A-70E9-430A-A3D6-648464B488AF}
+		{69628F83-9B32-4923-957E-FEAF494E7127} = {D61D7726-EB19-4C45-B03E-D5D095923871}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8
 		SolutionGuid = {99FF09DE-C35A-447E-A169-384DA768CA6A}
 	EndGlobalSection
 EndGlobal
