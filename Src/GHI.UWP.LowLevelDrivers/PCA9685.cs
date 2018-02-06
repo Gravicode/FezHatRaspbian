@@ -1,15 +1,17 @@
-﻿using System;
-using Unosquare.RaspberryIO;
+﻿using Mono.Linux.I2C;
+using System;
+//using Unosquare.RaspberryIO;
 //using Windows.Devices.Gpio;
 //using Windows.Devices.I2c;
-using Unosquare.RaspberryIO.Gpio;
+//using Unosquare.RaspberryIO.Gpio;
 
 
 namespace GHI.UWP.LowLevelDrivers
 {
 	public class PCA9685 {
-		private I2CDevice device;
-		private GpioPin outputEnable;
+        private I2CBus i2cBus;
+        private I2CDevice device;
+		private Unosquare.RaspberryIO.Gpio.GpioPin outputEnable;
 		private byte[] write5;
 		private byte[] write2;
 		private byte[] write1;
@@ -23,7 +25,7 @@ namespace GHI.UWP.LowLevelDrivers
 			Prescale = 0xFE
 		}
 
-		public static int GetAddress(bool a0, bool a1, bool a2, bool a3, bool a4, bool a5) => (int)(0x40 | (a0 ? 1 : 0) | (a1 ? 2 : 0) | (a2 ? 4 : 0) | (a3 ? 8 : 0) | (a4 ? 16 : 0) | (a5 ? 32 : 0));
+		public static byte GetAddress(bool a0, bool a1, bool a2, bool a3, bool a4, bool a5) => (byte)(0x40 | (a0 ? 1 : 0) | (a1 ? 2 : 0) | (a2 ? 4 : 0) | (a3 ? 8 : 0) | (a4 ? 16 : 0) | (a5 ? 32 : 0));
 
 		public void Dispose() => this.Dispose(true);
 
@@ -31,8 +33,10 @@ namespace GHI.UWP.LowLevelDrivers
            
         }
 
-		public PCA9685(I2CDevice device, GpioPin outputEnable) {
-			this.write5 = new byte[5];
+		public PCA9685(I2CDevice device, Unosquare.RaspberryIO.Gpio.GpioPin outputEnable) {
+             
+
+            this.write5 = new byte[5];
 			this.write2 = new byte[2];
 			this.write1 = new byte[1];
 			this.read1 = new byte[1];
@@ -42,9 +46,9 @@ namespace GHI.UWP.LowLevelDrivers
 			this.outputEnable = outputEnable;
 
 			if (this.outputEnable != null) {
-				this.outputEnable.PinMode = GpioPinDriveMode.Output;
+				this.outputEnable.PinMode = Unosquare.RaspberryIO.Gpio.GpioPinDriveMode.Output;
                 
-				this.outputEnable.Write(GpioPinValue.Low);
+				this.outputEnable.Write(Unosquare.RaspberryIO.Gpio.GpioPinValue.Low);
 			}
 
 			this.WriteRegister(Register.Mode1, 0x20);
@@ -95,7 +99,7 @@ namespace GHI.UWP.LowLevelDrivers
 				if (this.disposed) throw new ObjectDisposedException(nameof(PCA9685));
 				if (this.outputEnable == null) throw new NotSupportedException();
 
-				this.outputEnable.Write(value ? GpioPinValue.Low : GpioPinValue.High);
+				this.outputEnable.Write(value ? Unosquare.RaspberryIO.Gpio.GpioPinValue.Low : Unosquare.RaspberryIO.Gpio.GpioPinValue.High);
 			}
 		}
 
@@ -143,27 +147,28 @@ namespace GHI.UWP.LowLevelDrivers
 			this.write5[3] = (byte)off;
 			this.write5[4] = (byte)(off >> 8);
 
-			//this.device.Write(this.write5);
+			
             var writevalue = new byte[4];
-            for(int i = 0; i < writevalue.Length; i++)
-            {
-                writevalue[i] = this.write5[i+1];
-                this.device.WriteAddressByte(this.write5[0], this.write5[i + 1]);
-            }
             
+            for(int i = 1; i < write5.Length; i++)
+            {
+                writevalue[i-1] = this.write5[i];
+                //this.device.WriteAddressByte(this.write5[0], this.write5[i + 1]);
+            }
+            this.device.Write(this.write5[0],writevalue);
         }
 
 		private void WriteRegister(Register register, byte value) {
 			this.write2[0] = (byte)register;
 			this.write2[1] = value;
 
-			this.device.WriteAddressByte(this.write2[0], this.write2[1]);
+			this.device.WriteByte(this.write2[0], this.write2[1]);
 		}
 
 		private byte ReadRegister(Register register) {
 			this.write1[0] = (byte)register;
 
-            this.read1[0] = this.device.ReadAddressByte(this.write1[0]);
+            this.read1 = this.device.Read(this.write1[0],1);
 
 			return this.read1[0];
 		}

@@ -1,0 +1,6 @@
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Mono.Linux.I2C\bin\Debug\Mono.Linux.I2C.dll
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Mono.Linux.I2C\bin\Debug\Mono.Linux.I2C.pdb
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Mono.Linux.I2C\bin\Debug\Mono.Posix.dll
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Mono.Linux.I2C\obj\Debug\Mono.Linux.I2C.csproj.CoreCompileInputs.cache
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Mono.Linux.I2C\obj\Debug\Mono.Linux.I2C.dll
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Mono.Linux.I2C\obj\Debug\Mono.Linux.I2C.pdb

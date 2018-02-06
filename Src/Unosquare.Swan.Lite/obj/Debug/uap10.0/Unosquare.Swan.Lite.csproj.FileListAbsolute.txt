@@ -20,3 +20,13 @@ C:\experiment\raspi-mono\FezHatRaspbian\Unosquare.Swan.Lite\obj\Debug\uap10.0\Un
 C:\experiment\raspi-mono\FezHatRaspbian\Unosquare.Swan.Lite\obj\Debug\uap10.0\Unosquare.Swan.Lite.dll
 C:\experiment\raspi-mono\FezHatRaspbian\Unosquare.Swan.Lite\obj\Debug\uap10.0\Unosquare.Swan.Lite.xml
 C:\experiment\raspi-mono\FezHatRaspbian\Unosquare.Swan.Lite\obj\Debug\uap10.0\Unosquare.Swan.Lite.pdb
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan.Lite\bin\Debug\uap10.0\Unosquare.Swan.Lite.dll
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan.Lite\bin\Debug\uap10.0\Unosquare.Swan.Lite.pdb
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan.Lite\bin\Debug\uap10.0\Unosquare.Swan.Lite.xml
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan.Lite\obj\Debug\uap10.0\Unosquare.Swan.Lite.csproj.CoreCompileInputs.cache
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan.Lite\obj\Debug\uap10.0\PlatformCompat.Analyzers.settings
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan.Lite\obj\Debug\uap10.0\Unosquare.Swan.Lite.AssemblyInfoInputs.cache
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan.Lite\obj\Debug\uap10.0\Unosquare.Swan.Lite.AssemblyInfo.cs
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan.Lite\obj\Debug\uap10.0\Unosquare.Swan.Lite.dll
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan.Lite\obj\Debug\uap10.0\Unosquare.Swan.Lite.xml
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan.Lite\obj\Debug\uap10.0\Unosquare.Swan.Lite.pdb

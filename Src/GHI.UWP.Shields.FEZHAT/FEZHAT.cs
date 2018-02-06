@@ -162,7 +162,7 @@ namespace GHI.UWP.Shields.FEZHAT
                 this.disposed = true;
             }
         }
-
+        static Mono.Linux.I2C.I2CBus i2cBus;
         /// <summary>
         /// Creates a new instance of the FEZ HAT.
         /// </summary>
@@ -171,14 +171,20 @@ namespace GHI.UWP.Shields.FEZHAT
             //var gpioController = GpioController.GetDefault();
             //var i2cController = (await DeviceInformation.FindAllAsync(I2cDevice.GetDeviceSelector(FEZHAT.I2cDeviceName)))[0];
             var hat = new FEZHAT();
-            I2CDevice i2c_accelerometer = Pi.I2C.AddDevice(MMA8453.GetAddress(false));
-
+            if (i2cBus == null)
+            {
+                i2cBus = new Mono.Linux.I2C.I2CBus (0x01);
+            }
+            //I2CDevice i2c_accelerometer = Pi.I2C.AddDevice(MMA8453.GetAddress(false));
+            var i2c_accelerometer = new Mono.Linux.I2C.I2CDevice(i2cBus, MMA8453.GetAddress(false));
             hat.accelerometer = new MMA8453(i2c_accelerometer);
 
-            I2CDevice i2c_analog = Pi.I2C.AddDevice(ADS7830.GetAddress(false, false));
+            //I2CDevice i2c_analog = Pi.I2C.AddDevice(ADS7830.GetAddress(false, false));
+            var i2c_analog = new Mono.Linux.I2C.I2CDevice(i2cBus, ADS7830.GetAddress(false, false));
             hat.analog = new ADS7830(i2c_analog);
 
-            I2CDevice i2c_pwm = Pi.I2C.AddDevice(PCA9685.GetAddress(true, true, true, true, true, true));
+            //I2CDevice i2c_pwm = Pi.I2C.AddDevice(PCA9685.GetAddress(true, true, true, true, true, true));
+            var i2c_pwm = new Mono.Linux.I2C.I2CDevice(i2cBus, PCA9685.GetAddress(true, true, true, true, true, true));
             hat.pwm = new PCA9685(i2c_pwm, Pi.Gpio.Pin23);//Pi.Gpio.Pin13);x
             hat.pwm.OutputEnabled = true;
             hat.pwm.Frequency = 1500;

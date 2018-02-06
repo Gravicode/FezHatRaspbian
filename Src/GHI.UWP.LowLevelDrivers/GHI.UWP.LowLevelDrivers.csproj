@@ -42,12 +42,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADS7830.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="MMA8453.cs" />
     <Compile Include="PCA9685.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Mono.Linux.I2C\Mono.Linux.I2C.csproj">
+      <Project>{b70915ea-3f00-492d-8011-e01b746dd050}</Project>
+      <Name>Mono.Linux.I2C</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Unosquare.RaspberryIO\Unosquare.RaspberryIO.csproj">
       <Project>{779d2122-1e71-40ac-b735-70626c0f28aa}</Project>
       <Name>Unosquare.RaspberryIO</Name>

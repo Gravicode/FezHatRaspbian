@@ -87,8 +87,8 @@ namespace TestFezHatRaspbian
                 var LedsTextBox = next.ToString();
                 Console.WriteLine($"Led : {LedsTextBox}");
                 hat.DIO24On = next;
-                hat.D2.Color = next ? GIS.FEZHAT.Color.White : GIS.FEZHAT.Color.Black;
-                hat.D3.Color = next ? GIS.FEZHAT.Color.White : GIS.FEZHAT.Color.Black;
+                hat.D2.Color = next ? GIS.FEZHAT.Color.Green : GIS.FEZHAT.Color.Black;
+                hat.D3.Color = next ? GIS.FEZHAT.Color.Blue : GIS.FEZHAT.Color.Black;
 
                 hat.WriteDigital(GIS.FEZHAT.DigitalPin.DIO16, next);
                 hat.WriteDigital(GIS.FEZHAT.DigitalPin.DIO26, next);

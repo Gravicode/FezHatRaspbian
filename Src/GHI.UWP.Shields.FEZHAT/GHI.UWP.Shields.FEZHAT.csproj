@@ -52,6 +52,10 @@
       <Project>{bbf6787e-5c5a-4919-92bc-9c2e802cdad3}</Project>
       <Name>GHI.UWP.LowLevelDrivers</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Mono.Linux.I2C\Mono.Linux.I2C.csproj">
+      <Project>{b70915ea-3f00-492d-8011-e01b746dd050}</Project>
+      <Name>Mono.Linux.I2C</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Unosquare.RaspberryIO\Unosquare.RaspberryIO.csproj">
       <Project>{779d2122-1e71-40ac-b735-70626c0f28aa}</Project>
       <Name>Unosquare.RaspberryIO</Name>

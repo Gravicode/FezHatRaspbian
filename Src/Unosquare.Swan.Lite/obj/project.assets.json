@@ -11871,11 +11871,11 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\experiment\\raspi-mono\\FezHatRaspbian\\Unosquare.Swan.Lite\\Unosquare.Swan.Lite.csproj",
+      "projectUniqueName": "C:\\experiment\\raspi-mono\\FezHatRaspbian\\Src\\Unosquare.Swan.Lite\\Unosquare.Swan.Lite.csproj",
       "projectName": "Unosquare.Swan.Lite",
-      "projectPath": "C:\\experiment\\raspi-mono\\FezHatRaspbian\\Unosquare.Swan.Lite\\Unosquare.Swan.Lite.csproj",
+      "projectPath": "C:\\experiment\\raspi-mono\\FezHatRaspbian\\Src\\Unosquare.Swan.Lite\\Unosquare.Swan.Lite.csproj",
       "packagesPath": "C:\\Users\\mifma\\.nuget\\packages\\",
-      "outputPath": "C:\\experiment\\raspi-mono\\FezHatRaspbian\\Unosquare.Swan.Lite\\obj\\",
+      "outputPath": "C:\\experiment\\raspi-mono\\FezHatRaspbian\\Src\\Unosquare.Swan.Lite\\obj\\",
       "projectStyle": "PackageReference",
       "crossTargeting": true,
       "fallbackFolders": [

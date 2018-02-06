@@ -26,3 +26,17 @@ C:\experiment\raspi-mono\FezHatRaspbian\Unosquare.Swan\obj\Debug\net452\Unosquar
 C:\experiment\raspi-mono\FezHatRaspbian\Unosquare.Swan\obj\Debug\net452\Unosquare.Swan.dll
 C:\experiment\raspi-mono\FezHatRaspbian\Unosquare.Swan\obj\Debug\net452\Unosquare.Swan.xml
 C:\experiment\raspi-mono\FezHatRaspbian\Unosquare.Swan\obj\Debug\net452\Unosquare.Swan.pdb
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan\bin\Debug\net452\Unosquare.Swan.dll
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan\bin\Debug\net452\Unosquare.Swan.pdb
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan\bin\Debug\net452\Unosquare.Swan.xml
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan\bin\Debug\net452\Unosquare.Swan.Lite.dll
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan\bin\Debug\net452\Unosquare.Swan.Lite.pdb
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan\bin\Debug\net452\Unosquare.Swan.Lite.xml
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan\obj\Debug\net452\Unosquare.Swan.csprojResolveAssemblyReference.cache
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan\obj\Debug\net452\Unosquare.Swan.csproj.CoreCompileInputs.cache
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan\obj\Debug\net452\PlatformCompat.Analyzers.settings
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan\obj\Debug\net452\Unosquare.Swan.AssemblyInfoInputs.cache
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan\obj\Debug\net452\Unosquare.Swan.AssemblyInfo.cs
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan\obj\Debug\net452\Unosquare.Swan.dll
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan\obj\Debug\net452\Unosquare.Swan.xml
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan\obj\Debug\net452\Unosquare.Swan.pdb

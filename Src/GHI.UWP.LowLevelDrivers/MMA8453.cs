@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Mono.Linux.I2C;
+using System;
 //using Windows.Devices.I2c;
-using Unosquare.RaspberryIO.Gpio;
+//using Unosquare.RaspberryIO.Gpio;
 
 namespace GHI.UWP.LowLevelDrivers
 {
@@ -10,7 +11,7 @@ namespace GHI.UWP.LowLevelDrivers
         private byte[] read;
         private bool disposed;
 
-        public static int GetAddress(bool a0) => (int)(0x1C | (a0 ? 1 : 0));
+        public static byte GetAddress(bool a0) => (byte)(0x1C | (a0 ? 1 : 0));
 
         public void Dispose() => this.Dispose(true);
 
@@ -20,7 +21,7 @@ namespace GHI.UWP.LowLevelDrivers
             this.read = new byte[6];
             this.disposed = false;
 
-            this.device.Write(new byte[] { 0x2A, 0x01 });
+            this.device.WriteByte((byte)0x2A, 0x01 );
         }
 
         protected virtual void Dispose(bool disposing) {
@@ -36,11 +37,12 @@ namespace GHI.UWP.LowLevelDrivers
         public void GetAcceleration(out double x, out double y, out double z) {
             if (this.disposed) throw new ObjectDisposedException(nameof(MMA8453));
             //write sekali terus read sequential...
-            this.read[0] = this.device.ReadAddressByte(this.write[0]);
+            this.read = this.device.Read(this.write[0],6);
+            /*
             for (int i = 1; i < this.read.Length; i++)
             {
                 this.read[i] = this.device.ReadAddressByte(this.write[0]);
-            }
+            }*/
             x = this.Normalize(0);
             y = this.Normalize(2);
             z = this.Normalize(4);

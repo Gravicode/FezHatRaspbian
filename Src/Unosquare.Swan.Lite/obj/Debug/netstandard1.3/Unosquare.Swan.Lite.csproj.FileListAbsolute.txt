@@ -20,3 +20,14 @@ C:\experiment\raspi-mono\FezHatRaspbian\Unosquare.Swan.Lite\obj\Debug\netstandar
 C:\experiment\raspi-mono\FezHatRaspbian\Unosquare.Swan.Lite\obj\Debug\netstandard1.3\Unosquare.Swan.Lite.dll
 C:\experiment\raspi-mono\FezHatRaspbian\Unosquare.Swan.Lite\obj\Debug\netstandard1.3\Unosquare.Swan.Lite.xml
 C:\experiment\raspi-mono\FezHatRaspbian\Unosquare.Swan.Lite\obj\Debug\netstandard1.3\Unosquare.Swan.Lite.pdb
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan.Lite\bin\Debug\netstandard1.3\Unosquare.Swan.Lite.deps.json
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan.Lite\bin\Debug\netstandard1.3\Unosquare.Swan.Lite.dll
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan.Lite\bin\Debug\netstandard1.3\Unosquare.Swan.Lite.pdb
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan.Lite\bin\Debug\netstandard1.3\Unosquare.Swan.Lite.xml
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan.Lite\obj\Debug\netstandard1.3\Unosquare.Swan.Lite.csproj.CoreCompileInputs.cache
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan.Lite\obj\Debug\netstandard1.3\PlatformCompat.Analyzers.settings
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan.Lite\obj\Debug\netstandard1.3\Unosquare.Swan.Lite.AssemblyInfoInputs.cache
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan.Lite\obj\Debug\netstandard1.3\Unosquare.Swan.Lite.AssemblyInfo.cs
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan.Lite\obj\Debug\netstandard1.3\Unosquare.Swan.Lite.dll
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan.Lite\obj\Debug\netstandard1.3\Unosquare.Swan.Lite.xml
+C:\experiment\raspi-mono\FezHatRaspbian\Src\Unosquare.Swan.Lite\obj\Debug\netstandard1.3\Unosquare.Swan.Lite.pdb
